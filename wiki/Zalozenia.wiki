@@ -3,14 +3,14 @@
 =Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu=
 
 ==Klienci==
-===*Lista i dane osobowe klientów===
-===*Rodzaj i data rozpoczecia prenumeraty===
-===*Statystyki o trendach lokalizacji===
-===*Bazy nowych potencjalnych klientów===
+===*_italic_Lista i dane osobowe klientów===
+===*_italic_Rodzaj i data rozpoczecia prenumeraty===
+===*_italic_Statystyki o trendach lokalizacji===
+===*_italic_Bazy nowych potencjalnych klientów===
 
 ==Redagowanie pisma==
 
-===*Zbieranie i wersjonowanie nowych artykułów===
-===*Wycena i kosztorys numeru/ artukułu===
-===*Składanie numeru, generowanie spisu treści===
-===*Zarządzanie fragmentami publikując je na stronach zewnętrznych===
+===*_italic_Zbieranie i wersjonowanie nowych artykułów===
+===*_italic_Wycena i kosztorys numeru/ artukułu===
+===*_italic_Składanie numeru, generowanie spisu treści===
+===*_italic_Zarządzanie fragmentami publikując je na stronach zewnętrznych===
