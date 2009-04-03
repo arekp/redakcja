@@ -3,10 +3,10 @@
 =Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu=
 
 ==Klienci==
-===*_italic_Lista i dane osobowe klientów===
-===*_italic_Rodzaj i data rozpoczecia prenumeraty===
-===*_italic_Statystyki o trendach lokalizacji===
-===*_italic_Bazy nowych potencjalnych klientów===
+===*_italic_*Lista i dane osobowe klientów===
+===*_italic_*Rodzaj i data rozpoczecia prenumeraty===
+===*_italic_*Statystyki o trendach lokalizacji===
+===*_italic_*Bazy nowych potencjalnych klientów===
 
 ==Redagowanie pisma==
 
