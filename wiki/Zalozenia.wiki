@@ -1,6 +1,4 @@
-#summary One-sentence summary of this page.
-
-=Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu=
+#Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu=
 
 ==Klienci==
   * Lista i dane osobowe klientów 
