@@ -3,10 +3,10 @@
 =Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu=
 
 ==Klienci==
-Lista i dane osobowe klientów
-Rodzaj i data rozpoczecia prenumeraty
-Statystyki o trendach lokalizacji
-Bazy nowych potencjalnych klientów
+* Lista i dane osobowe klientów
+* Rodzaj i data rozpoczecia prenumeraty
+* Statystyki o trendach lokalizacji
+* Bazy nowych potencjalnych klientów
 
 ==Redagowanie pisma==
 
