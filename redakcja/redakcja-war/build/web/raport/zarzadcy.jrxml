@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Zamowienie zarz?dcy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="adres" class="java.lang.String"/>
+	<field name="imie" class="java.lang.String"/>
+	<field name="kod" class="java.lang.String"/>
+	<field name="miasto" class="java.lang.String"/>
+	<field name="nazwisko" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="213">
+			<staticText>
+				<reportElement x="73" y="175" width="395" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[1 egzemplarz ADMINISTRATORA, zaczynając się od miesiąca ................  2009 r.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="73" y="148" width="395" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Zamawiam roczną (12 numerów) / półroczną (6 numerów)* prenumratę]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="72" width="323" height="32"/>
+				<textElement>
+					<font size="18" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Zamówienie prenumeraty ulgowej]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="104" width="202" height="27"/>
+				<textElement>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(tylko dla osób fizycznych)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="0" width="304" height="62"/>
+				<textElement>
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[„BUDEXPO” sp. z o.o.
+ul. Bartycka 26, 00-716 Warszawa
+tel. (022) 522-89-24, fax 522-89-05, administrator@budexpo.eu
+Miesięcznik ADMINISTRATOR, www.administrator.bedexpo.eu
+]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="233" splitType="Stretch">
+			<staticText>
+				<reportElement x="22" y="40" width="135" height="31"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Imię i Nazwisko]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="22" y="71" width="210" height="33"/>
+				<textElement>
+					<font size="16" isItalic="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{imie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="71" width="284" height="33"/>
+				<textElement>
+					<font size="16" isItalic="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nazwisko}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="104" width="51" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Adres]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="95" y="104" width="337" height="20"/>
+				<textElement>
+					<font size="14" isItalic="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{adres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="124" width="50" height="20"/>
+				<textElement>
+					<font size="14" isItalic="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{kod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="145" y="124" width="287" height="20"/>
+				<textElement>
+					<font size="14" isItalic="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{miasto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="154" width="482" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[tel. ........................................ e-mail ............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="185" width="482" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIP .............................................................................................................]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="350" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="110" width="554" height="101"/>
+				<textElement>
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[
+Zgadzam się na przetwarzanie moich danych osobowych przez „BUDEXPO” sp. z o.o. z siedzibą w Warszawie przy ul. Bartyckiej 26, dla celów obsługi prenumeraty i marketingowych.  Zgodnie z ustawą o ochronie danych osobowych DzU z 2002 r. nr 101, poz. 926 ze zm.) mam prawo wglądu do swoich danych, ich poprawiania, żądania zaprzestania przetwarzania moich danych osobowych. Wyrażam zgodę na przesyłanie informacji handlowej przez „BUDEXPO” sp. z o.o. za pomocą środków komunikacji elektronicznej w rozumieniu ustawy o świadczeniu usług drogą elektroniczną (DzU z 2002 r. nr 144, poz. 1204).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="258" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Data i podpis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="296" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[* niepotrzebne skreslić]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="554" height="110"/>
+				<textElement>
+					<font size="14" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Do zamówienia dołączam dowód wpłaty 108 zł   /   54 zł * na konto „BUDEXPO” sp. z o.o. w Kredyt Banku
+nr 86 1500 1272 1212 7001 7296 0000, z zaznaczeniem tytułu wpłaty: Prenumerata ADMINISTRATORA.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

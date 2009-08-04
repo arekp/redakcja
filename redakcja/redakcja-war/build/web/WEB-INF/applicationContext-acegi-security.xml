@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">
+<!-- Podstawowa definicja filtrów co bedziemy miec i jak zarzadzac -->
+    <bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+        <property name="filterInvocationDefinitionSource">
+            <value>CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                        PATTERN_TYPE_APACHE_ANT
+                        /**=httpSessionContextIntegrationFilter,formAuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterSecurityInterceptor,logoutFilter
+            </value>
+        </property>
+    </bean>
+
+<!-- ustawienia dotyczące logowania sie poprzez formularz -->
+    <bean id="formAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager" /><!-- zarządzanie procesem uwierzytelniania --> 
+        <property name="authenticationFailureUrl" value="/login.action?error=1" /><!--strona z informacją o błedzie logowania -->
+        <property name="defaultTargetUrl" value="/" />
+        <property name="filterProcessesUrl" value="/j_acegi_security_check" /><!-- na takiej akcji nasluchuje w celu autoryzacji -->
+        <!--property name="rememberMeServices" ref="rememberMeServices"/--><!-- Aby mozna bylo zapamietac i automatycznie sie logowac-->
+    </bean>
+
+    <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager"> <!-- zarządzanie procesem uwierzytelniania --> 
+        <property name="providers">
+            <list>
+                <ref local="daoAuthenticationProvider"/>
+                <!--ref local="anonymousAuthenticationProvider"/-->
+                <!--ref local="rememberMeAuthenticationProvider"/-->
+            </list>
+        </property>
+    </bean>
+<!-- realizuje uwierzytelnianie wedługo okreslonych regul -->
+    <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+        <!--property name="userDetailsService">
+            <ref bean="userDetailsProvider" />
+        </property-->
+        <property name="userDetailsService">
+            <ref bean="jdbcAuthenticationDao"/>
+        </property>
+    </bean>
+<!-- autoryzacja przy pomocy bazy danych -->
+    <bean id="jdbcAuthenticationDao" class="org.acegisecurity.userdetails.jdbc.JdbcDaoImpl">
+        <property name="dataSource" ref="dataSource"/> <!-- metoda połaczenia do bazy -->
+        <property name="usersByUsernameQuery">
+            <value>
+                SELECT login as username, password, enabled FROM users u where login =?
+            </value>
+        </property>
+        <property name="authoritiesByUsernameQuery">
+            <value>
+             SELECT role.login as username, role.role as authority FROM userroles role where role.login=?
+            </value>
+        </property>
+    </bean>
+<!-- metoda połaczenia do bazy -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3307/redakcja"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+
+<!-- autoryzacja za pomocą listy -->
+<!--bean id="userDetailsProvider" class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+        <property name="userMap">
+            <value>
+                        admin=acegi,ROLE_ADMIN
+                        user=security,ROLE_USER
+                        root=demo,ROLE_ADMIN,ROLE_USER
+            </value>
+        </property>
+    </bean-->
+
+
+    <bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+        <constructor-arg index="0" value="/login.action?error=2"/>
+        <constructor-arg index="1">
+            <list>
+                <ref local="securityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+        <property name="filterProcessesUrl" value="/j_acegi_logout"/>
+    </bean>
+
+<bean id="securityContextLogoutHandler"  class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+
+<!-- remember me processing filter
+    <bean id="rememberMeProcessingFilter"
+      class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+        <property name="rememberMeServices" ref="rememberMeServices" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="rememberMeServices"
+      class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+        <property name="userDetailsService">
+            <ref local="memoryAuthenticationDao"/>
+        </property>
+        <property name="key" value="someTokenName"/>
+    </bean>
+
+    <bean id="rememberMeAuthenticationProvider"
+      class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+        <property name="key" value="someTokenName"/>
+    </bean>
+ -->
+
+<!-- Podstawowy bean filrtujacy ruch -->
+    <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+        <!--property name="context">
+            <value>org.acegisecurity.context.SecurityContextImpl</value>
+        </property-->
+    </bean>
+
+    <!--   uprawnienia -->
+    <!-- zarządzanie wyjatkami w acegi -->
+    <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+        <property name="authenticationEntryPoint">
+            <ref bean="formLoginAuthenticationEntryPoint" />
+        </property>
+        		<property name="accessDeniedHandler">
+			<bean
+				class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+				<property name="errorPage" value="/Login.action?login_error=2" />
+			</bean>
+		</property>
+    </bean>
+
+    <bean id="formLoginAuthenticationEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <property name="loginFormUrl">
+            <value>/login.action?error=3</value><!-- definicja strony z brakiem dostepu brak roli -->
+        </property>
+    </bean>
+<!-- definiujemy do jakich zasobów jaka rola ma dostep -->
+    <bean id="filterSecurityInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+        <property name="authenticationManager">
+            <ref bean="authenticationManager" />
+        </property>
+        <property name="accessDecisionManager">
+            <ref bean="accessDecisionManager" />
+        </property>
+        <property name="objectDefinitionSource">
+            <value>
+                        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                        PATTERN_TYPE_APACHE_ANT
+                        /biznes/**=ROLE_BIZNES
+                        /witam.action=ROLE_TEST
+                        /admin/**=ROLE_ADMIN
+                        /redakcja/**=ROLE_RED
+                        /klient/**=ROLE_BIZNES
+            </value>
+        </property>
+    </bean>
+
+
+
+    <bean id="accessDecisionManager" class="org.acegisecurity.vote.UnanimousBased">
+        <property name="decisionVoters">
+            <list>
+                <ref bean="roleVoter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter">
+        <property name="rolePrefix">
+            <value>ROLE_</value>
+        </property>
+    </bean>
+
+    <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+
+</beans>
