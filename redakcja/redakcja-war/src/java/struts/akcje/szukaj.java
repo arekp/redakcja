@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -105,7 +106,7 @@ public class szukaj extends ActionSupport implements SessionAware {
     public void setDaneKlient(Collection<Klient> daneKlient) {
         this.daneKlient = daneKlient;
     }
-
+ @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -115,7 +116,7 @@ public class szukaj extends ActionSupport implements SessionAware {
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private zarzadcaFacadeLocal ZarzadcaFacadeLocal() {
         try {
             Context c = new InitialContext();

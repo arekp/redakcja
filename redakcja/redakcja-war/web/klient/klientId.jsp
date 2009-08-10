@@ -105,6 +105,7 @@
             <td> <sx:datetimepicker label="Prenumerata Od"  toggleDuration="300" name="prenOd" toggleDuration="500" displayFormat="dd/MM/yyyy" /> </td>
             <td>Prenumerata na miesiecy</td><td><select name="okres">
                     <option>1</option>
+                    <option>3</option>
                     <option>6</option>
                     <option>12</option>
             </select></td>

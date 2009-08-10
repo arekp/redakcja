@@ -45,6 +45,7 @@ public class KlientFacade implements KlientFacadeLocal {
     }
 
     public List<Klient> findKlient(String ciag) {
+        System.out.print("KlientFacade --> "+ciag);
 //        Query q = em.createQuery( "select k from Klient k where  k.nazwa like :ciag or k.info like :ciag" );
         Query q = em.createQuery("select k from Klient k, IN (k.adresy) a where" +
                 "(k.nazwa like :ciag or k.info like :ciag or k.klasaKlienta like :ciag or k.statusPren like :ciag or a.adress like :ciag " +
@@ -84,4 +85,14 @@ public class KlientFacade implements KlientFacadeLocal {
         String dataD = q.getSingleResult().toString();
         return dataD;
     }
+
+        public String IloscEgzempl(Date data,String typ) {
+        Query q = em.createQuery("SELECT SUM(k.ilosc) FROM Klient k where k.prenDo >= :data and typ= :typ");
+        q.setParameter("data", data);
+        q.setParameter("typ", typ);
+        String dataD = q.getSingleResult().toString();
+        return dataD;
+    }
+
+
 }

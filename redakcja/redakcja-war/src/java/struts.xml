@@ -71,14 +71,21 @@
             <result name="success" >/index.jsp</result>
         </action>
 
- <action name="numer_*" class="struts.akcje.numerAction" >
+        <action name="numer_*" class="struts.akcje.numerAction" >
             <param name="b">{1}</param>
             <result>/index.jsp</result>
+            <result name="sendFile" type="stream">
+                <param name="contentDisposition">attachment;filename="${filename}"</param>
+                <param name="contentType">${contentType}</param>
+                <!--param name="contentLength">${wielkoscpliku}</param-->
+                <!--param name="bufferSize">1024</param-->
+            </result>
         </action>
 
         <action name="login" class="struts.akcje.login" >
             <result name="success" >/index.jsp</result>
         </action>
+
     </package>
 
    

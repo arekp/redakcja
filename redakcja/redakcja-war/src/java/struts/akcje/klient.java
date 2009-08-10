@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -290,6 +291,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
         setTabelkaHTML(tableFacade.render()); // Will write the export data out to the response.
     }
 
+    @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -299,7 +301,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private zamowieniaFacadeLocal zamowieniaFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -309,7 +311,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private adresFacadeLocal adresFacadeLocal() {
         try {
             Context c = new InitialContext();

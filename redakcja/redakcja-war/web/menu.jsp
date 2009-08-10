@@ -17,24 +17,34 @@
 
 <authz:authorize ifAllGranted="ROLE_USER">
     <ul>
-          <s:include value="/moduly/szukaj.jsp"/>
+        <s:include value="/moduly/szukaj.jsp"/>
 
         <li>  <h2>Numer</h2>
             <ul>
-             <li><a href="<s:url value="/klient/klient_newKlient.action"/>">Nowy Klient</a></li>
-             <li><a href="<s:url value="/numer_addFor.action"/>">Nowy Numer</a></li>
-             <li><a href="<s:url value="/numer_lista.action"/>">Lista numerów</a></li>
-            
+                <li><a href="<s:url value="/klient/klient_newKlient.action"/>">Nowy Klient</a></li>
+                <!--li><a href="<!--s:url value="/numer_addFor.action"/>">Nowy Numer</a></li>
+                <li><a href="<!--s:url value="/numer_lista.action"/>">Lista numerów</a></li-->
+
             </ul>
         </li>
-</authz:authorize>
+    </authz:authorize>
 
     <authz:authorize ifAnyGranted="ROLE_MARKETING">
         <li>         <h2>Ilość egzemplarzy </h2>
-            <s:bean name="moduly.dane" id="uid" >
-                Do wysyłki mamy
-                <h1  align="center"><s:property value="%{iloscPren}" /></h1>
-            </s:bean>
+
+            Do wysyłki mamy
+            <s:if test="#session.numer neq null">
+                <s:bean name="moduly.dane" id="uid">
+                    <s:param name="test" value="%{#session.numer}"/>
+                   <h1  align="center"><s:property value="%{iloscPren}" /></h1>
+                    dla numeru <s:date name="#session.numer" format="MM/yyyy" />
+                </s:bean>
+            </s:if>
+            <s:else>
+                <s:bean name="moduly.dane" id="uid" >
+                    <h1  align="center"><s:property value="%{iloscPren}" /></h1>
+                </s:bean>
+            </s:else>
         </li>
         <li>
             <h2>Wysyłka</h2>
@@ -66,11 +76,6 @@
                 <li><a href="<s:url value="/admin/form_in.action"/>">Import danych</a></li>
             </ul>
         </li>
-        <li><a href="<s:url value="witam.action"/>">Wysylka</a></li>
-        <li><form action="<s:url value="/klient/klient_wysylka.action"/>" method="post">
-                <sx:datetimepicker label="miesiac wydruków" value="%{'today'}"  toggleType="explode" toggleDuration="500" name="prenOd" displayFormat="MM-yyyy" />
-                <input type="submit" value="ustaw miesiac" />
-            </form>
-        </li>
+
     </authz:authorize>
 </ul>
