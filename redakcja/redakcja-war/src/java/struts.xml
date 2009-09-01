@@ -23,6 +23,25 @@
         </action>
     </package>
 
+    <package name="kontrahent" namespace="/kontrahent" extends="struts-default">
+        <action name="kontrahent_*" class="struts.akcje.kontrahentAction" >
+            <param name="b">{1}</param>
+            <result name="success" >/index.jsp</result>
+        </action>
+    </package>
+    <package name="dokument" namespace="/dokument" extends="struts-default">
+        <action name="dokument_*" class="struts.akcje.dokumentAction" >
+            <param name="b">{1}</param>
+            <result name="success" >/index.jsp</result>
+            <result name="sendFile" type="stream">
+                <param name="contentDisposition">attachment;filename="${fileFileName}"</param>
+                <param name="contentType">${fileContentType}</param>
+               <!--param name="contentLength">${wielkoscpliku}</param-->
+                <!--param name="bufferSize">1024</param-->
+            </result>
+        </action>
+    </package>
+
     <package name="importy" namespace="/importy" extends="struts-default">
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
@@ -77,7 +96,7 @@
             <result name="sendFile" type="stream">
                 <param name="contentDisposition">attachment;filename="${filename}"</param>
                 <param name="contentType">${contentType}</param>
-                <!--param name="contentLength">${wielkoscpliku}</param-->
+               <!--param name="contentLength">${wielkoscpliku}</param-->
                 <!--param name="bufferSize">1024</param-->
             </result>
         </action>

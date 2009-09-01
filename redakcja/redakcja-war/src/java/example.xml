@@ -5,9 +5,10 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <constant name="struts.multipart.maxSize" value="1000000" />
+    <constant name="struts.multipart.maxSize" value="10000000" /><!-- 10 Mb -->
     <constant name="struts.multipart.parser" value="jakarta" />
     <constant name="struts.multipart.saveDir" value="" />
+
 
 
     <package name="admin" namespace="/admin" extends="struts-default">

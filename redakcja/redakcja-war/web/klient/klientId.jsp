@@ -35,7 +35,7 @@
         <tr>
             <td><b>NIP</b></td>
             <td><s:property value="klient.nip"/></td>
-            <td><b>Ilość Egzemblarzy </b></td>
+            <td><b>Ilość Egzemplarzy </b></td>
             <td><s:property value="klient.ilosc"/></td>
         </tr>
     </tbody>

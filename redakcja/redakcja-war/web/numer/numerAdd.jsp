@@ -5,19 +5,12 @@
 
 <fieldset>
     <legend><span style="color:#0000FF;font-weight:bold;"> Nowy numer </span></legend>
-      <form action="<s:url value="/numer_add.action"/>" method="post">
-        <table  style="color:#000000; font-size: 13px;">
-            <tr>
-                <td> <s:textfield name="nazwa" label="Numer" value="%{nazwa}" size="10"/></td>
-            </tr>
-                        <tr>
-                <td>  <sx:datetimepicker label="Data" value="%{data}"  toggleType="explode" toggleDuration="500" name="data" displayFormat="MM-yyyy" /></td>
-            </tr>
-                      
-                        <tr>
-                <td><s:textarea name="info" label="Informacje" value="%{info}" cols="50" rows="10" /></td>
-            </tr>
-        </table>
-        <input type="submit" value="Dodaj numer" />
-</form>
+       <s:form action="/numer_add" method="post">
+              <s:textfield name="nazwa" label="Nazwa " value="%{nazwa}" size="10" />
+              <s:textarea name="info" label="Informacje" value="%{info}" cols="20" rows="5" />
+              <sx:datetimepicker label="Miesiąc wydania numeru"  toggleDuration="300" name="data" toggleDuration="500" displayFormat="MM/yyyy" />
+             <p>Pamiętaj data musi odpowiadać miesiącu w którym jest wydawany numer !!</p>
+             <s:submit value="Rozpocznij Numer"/>
+    </s:form>
+
 </fieldset>

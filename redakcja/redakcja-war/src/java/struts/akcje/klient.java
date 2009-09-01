@@ -5,6 +5,8 @@
 package struts.akcje;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validation;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -54,6 +56,7 @@ import static org.jmesa.limit.ExportType.JEXCEL;
  *
  * @author arekp
  */
+//@Validation
 public class klient extends ActionSupport implements SessionAware, ServletRequestAware, ServletResponseAware {
 
     private Map session;
@@ -103,7 +106,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
 //private String info;
 
     @Override
-    public String execute() throws Exception {
+   public String execute() throws Exception {
 
         if (getB().equals("addZ")) //Dodajemy zamowienie
         {
@@ -769,6 +772,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
     /**
      * @return the aadres
      */
+//    @RequiredStringValidator(message="Adres jest polem wymaganym")
     public adres getAadres() {
         return aadres;
     }
@@ -776,6 +780,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
     /**
      * @param aadres the aadres to set
      */
+//    @RequiredStringValidator(message = "Adres jest wymaganym polem")
     public void setAadres(adres aadres) {
         this.aadres = aadres;
     }

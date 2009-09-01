@@ -5,11 +5,16 @@
 package klient.encje;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
@@ -26,24 +31,29 @@ public class numer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nazwa;
-    private String url;
+//    private String url;
     private String info;
-        private String status;
+    private String status;
+//        private String contentType;
     private int naklad;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date data;
+    @OneToMany(mappedBy = "id_opisu", fetch = FetchType.EAGER,  cascade = { CascadeType.ALL })
+//    @JoinColumn(name="klient_id",insertable = true, updatable = true, nullable = true)
+    private Collection<plik> plik = new ArrayList<plik>();
 
-    public numer(String nazwa, String url, String info, String status, int naklad, Date data){
-        this.data=data;
-        this.naklad=naklad;
-        this.status=status;
-        this.info=info;
-        this.url=url;
-        this.nazwa=nazwa;
+    public numer(String nazwa, String url, String info, String status, int naklad, Date data) {
+        this.data = data;
+        this.naklad = naklad;
+        this.status = status;
+        this.info = info;
+//        this.url=url;
+        this.nazwa = nazwa;
     }
 
-      public numer() {
+    public numer() {
     }
+
     public Long getId() {
         return id;
     }
@@ -89,20 +99,6 @@ public class numer implements Serializable {
      */
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
-    }
-
-    /**
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     /**
@@ -160,4 +156,19 @@ public class numer implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    /**
+     * @return the plik
+     */
+    public Collection<plik> getPlik() {
+        return plik;
+    }
+
+    /**
+     * @param plik the plik to set
+     */
+    public void setPlik(Collection<plik> plik) {
+        this.plik = plik;
+    }
+
 }

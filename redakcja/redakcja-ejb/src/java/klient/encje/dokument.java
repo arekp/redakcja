@@ -5,13 +5,18 @@
 package klient.encje;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
@@ -28,29 +33,63 @@ public class dokument implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long idRodzica;
+//    private Long idKontrahenta;
 
-    @ManyToOne
-    @JoinColumn(name = "idKontrahenta")
+    @ManyToOne( fetch = FetchType.EAGER,  cascade = { CascadeType.ALL })
+        @JoinColumn(name = "idKontrahenta")
     private kontrahent kont;
-
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.EAGER,  cascade = { CascadeType.ALL })
     @JoinColumn(name = "idNumer")
     private numer nume;
-
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.EAGER,  cascade = { CascadeType.ALL })
     @JoinColumn(name = "idRedaktora")
     private kontrahent redaktor;// id z tablicy autor z flaga redaktor osoba przypisana do redagowania tekstu
-   
     private String typ;//tablica DIC_FLAGA Flaga(Artukul,reklama,michalki)
-       private String tytul;
-    private String status;//Status(nowy,redagowaniu,zlozony_artukuł)
+    private String tytul;
+    private String status;//Status(nowy,redagowany,skonczony,zlozony_artukuł,zamknięty)
     private int iloscZnakow;
     private String nrStrony;
     private String powierzchnia;
     private double cena;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date data;
-    private String url;
+
+    public dokument() {
+      
+    }
+
+    public dokument(dokument _dokument) {
+     this.idRodzica=_dokument.idRodzica;
+this.kont=_dokument.kont;
+    this.nume=_dokument.nume;
+    this.redaktor=_dokument.redaktor;// id z tablicy autor z flaga redaktor osoba przypisana do redagowania tekstu
+    this.typ=_dokument.typ;//tablica DIC_FLAGA Flaga(Artukul,reklama,michalki)
+    this.tytul=_dokument.tytul;
+    this.status=_dokument.status;//Status(nowy,redagowaniu,zlozony_artukuł,Zamknięty)
+    this.iloscZnakow=_dokument.iloscZnakow;
+    this.nrStrony=_dokument.nrStrony;
+    this.powierzchnia= _dokument.powierzchnia;
+    this.cena=_dokument.cena;
+
+    }
+
+    public dokument(String tytul, double cena, Long idRodzica, int iloscZnakow,  String nrStrony, String powierzchnia, String status, String typ) {
+        this.idRodzica=idRodzica;
+//this.kont=kont;
+//    this.nume=nume;
+//    this.redaktor=redaktor;// id z tablicy autor z flaga redaktor osoba przypisana do redagowania tekstu
+    this.typ=typ;//tablica DIC_FLAGA Flaga(Artukul,reklama,michalki)
+    this.tytul=tytul;
+    this.status=status;//Status(nowy,redagowaniu,zlozony_artukuł,zamknięty)
+    this.iloscZnakow=iloscZnakow;
+    this.nrStrony=nrStrony;
+    this.powierzchnia=powierzchnia;
+    this.cena=cena;
+    }
+//    private String url;
+//    @OneToMany(mappedBy = "id_opisu", fetch = FetchType.EAGER,  cascade = { CascadeType.ALL })
+////    @JoinColumn(name="klient_id",insertable = true, updatable = true, nullable = true)
+//    private Collection<plik> plik = new ArrayList<plik>();
 
     public Long getId() {
         return id;
@@ -212,20 +251,6 @@ public class dokument implements Serializable {
     }
 
     /**
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
      * @return the nume
      */
     public numer getNume() {
@@ -266,4 +291,6 @@ public class dokument implements Serializable {
     public void setTyp(String typ) {
         this.typ = typ;
     }
+
+
 }

@@ -7,30 +7,33 @@
 <script type="text/javascript" src="<s:url value="/js/jquery.jmesa.js" />"></script>
 <script type="text/javascript" src="<s:url value="/js/jmesa.js" />"></script>
 <link rel="stylesheet" href="<s:url value="/css/jmesa.css" />" type="text/css">
+<h3>Wynik Szukania dla ciągu " <s:property value="ciag"/> "</h3>
 
-<form name="presidentsForm" action="<s:url value="/numer_lista.action"/>" >
+<form name="presidentsForm" action="<s:url value="/szukaj.action"/>" >
+    <s:hidden name="szuk_akcja" value="kontrahent"/>
+    <input type="hidden" name="ciag" value="<s:property value="%{ciag}"/>" />
     <jmesa:struts2TableFacade
-        id="daneNumer"
-        items="${daneNumer}"
+        id="daneKontrahent"
+        items="${daneKontrahent}"
         maxRows="8"
         maxRowsIncrements="8,16,24"
         var="bean"
         >
     <jmesa:htmlTable>
         <jmesa:htmlRow>
-            <jmesa:htmlColumn property="nazwa"  title="Nazwa Numeru" >
-                   <a href="<s:url value="/numer_set.action?id="/>${bean.id}" >${bean.nazwa}</a>
+            <jmesa:htmlColumn property="Nazwisko"  title="Nazwisko" >
+                <a href="<s:url value="/kontrahent/kontrahent_info.action?id="/>${bean.id}" >${bean.nazwisko}</a>
             </jmesa:htmlColumn>
-            <jmesa:htmlColumn property="data" title="Data"/>
-            <jmesa:htmlColumn property="naklad"  title="Nakład"/>
-            <jmesa:htmlColumn property="status" title="Status"/>
-            <jmesa:htmlColumn property="info"/>
-            <s:if test="%{#bean.url neq ''}">
-            <jmesa:htmlColumn  title="Pobierz numer" property="url" >
-                <a href="<s:url value="/numer_sendFile.action?id="/>${bean.id}" >${bean.url}</a>
-            </jmesa:htmlColumn>
-            </s:if>
-                   </jmesa:htmlRow>
+            <jmesa:htmlColumn property="imie" title="imie"/>
+            <jmesa:htmlColumn property="typ"  title="Typ"/>
+            <jmesa:htmlColumn property="ulica" title="Ulica"/>
+            <jmesa:htmlColumn property="miasto" title="Miasto"/>
+            <jmesa:htmlColumn property="stawka" title="Stawka"/>
+            <jmesa:htmlColumn property="email" title="Email"/>
+            <jmesa:htmlColumn property="tel" title="Telefon"/>
+            <jmesa:htmlColumn property="nip" title="Nip"/>
+
+        </jmesa:htmlRow>
     </jmesa:htmlTable>
     </jmesa:struts2TableFacade>
 </form>

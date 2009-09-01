@@ -10,11 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-//import java.math.BigInteger;
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.SQLException;
-//import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -22,22 +17,21 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import klient.bean.KlientFacade;
 import klient.bean.KlientFacadeLocal;
 import klient.bean.adresFacadeLocal;
+import klient.bean.dokumentFacadeLocal;
+import klient.bean.kontrahentFacadeLocal;
 import klient.bean.zamowieniaFacadeLocal;
 import klient.encje.Klient;
 import klient.encje.adres;
+import klient.encje.kontrahent;
 import klient.encje.zamowienia;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-//import java.util.HashSet;
-//import java.util.Set;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+
 
 /**
  *
@@ -51,6 +45,8 @@ public class formula extends ActionSupport {
     zamowieniaFacadeLocal zamFac = (zamowieniaFacadeLocal) zamowieniaFacadeLocal();
     @EJB
     adresFacadeLocal adrFac = (adresFacadeLocal) adresFacadeLocal();
+    @EJB
+    kontrahentFacadeLocal kontrahentFac = (kontrahentFacadeLocal) kontrahentFacadeLocal();
 
     public formula() {
     }
@@ -99,10 +95,58 @@ public class formula extends ActionSupport {
             System.out.print("nazwa  " + filename);
             CzytajPlik(file);
             attibutes.put("body", "/admin/ok.jsp");
+        }if (getB().equals("kontrahent")) {
+            System.out.print("pobrało " + file.getTotalSpace());
+            System.out.print("nazwa  " + filename);
+            Czytajkontrahent(file);
+            attibutes.put("body", "/admin/ok.jsp");
         }
         return "sukcess";
     }
+ public void Czytajkontrahent(File aFile) throws ParseException {
 
+        try {
+            //use buffering, reading one line at a time
+            //FileReader always assumes default encoding is OK!
+
+
+            BufferedReader input = new BufferedReader(new FileReader(aFile));
+            try {
+                String line = null; //not declared within while loop
+
+
+                int j = 0;
+                while ((line = input.readLine()) != null) {
+                  kontrahent _kontrahent = new kontrahent();
+                    String[] temp;
+                    temp = line.split(";");
+                    String nazwisko  = temp[0];
+                    String imie = temp[1];
+                    String miasto = temp[2];
+                    String ulica = temp[3];
+                    String info = temp[4];
+                    String tel = temp[5];
+                    String nip = temp[6];
+                    String pesel = temp[7];
+                     info = info+" " + temp[8];
+_kontrahent.setNazwisko(nazwisko);
+_kontrahent.setImie(imie);
+_kontrahent.setMiasto(miasto);
+_kontrahent.setUlica(ulica);
+_kontrahent.setInfo(info);
+_kontrahent.setTel(tel);
+_kontrahent.setNip(nip);
+_kontrahent.setPesel(pesel);
+kontrahentFac.create(_kontrahent);
+                    System.out.println("--------------------------------------" + j++);
+                }
+            } finally {
+                input.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     public void CzytajPlik(File aFile) throws ParseException {
 
         try {
@@ -193,7 +237,7 @@ public class formula extends ActionSupport {
     public void setB(String b) {
         this.b = b;
     }
-
+ @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -203,7 +247,16 @@ public class formula extends ActionSupport {
             throw new RuntimeException(ne);
         }
     }
-
+    private kontrahentFacadeLocal kontrahentFacadeLocal() {
+        try {
+            Context c = new InitialContext();
+            return (kontrahentFacadeLocal) c.lookup("redakcja/kontrahentFacade/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+ @AroundInvoke
     private adresFacadeLocal adresFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -213,7 +266,7 @@ public class formula extends ActionSupport {
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private zamowieniaFacadeLocal zamowieniaFacadeLocal() {
         try {
             Context c = new InitialContext();

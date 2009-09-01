@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import klient.bean.configFacadeLocal;
+import klient.encje.numer;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import org.jmesa.facade.TableFacade;
 import org.jmesa.facade.TableFacadeFactory;
@@ -51,7 +53,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
     private Map session; // zmienne sesyjne
     private String b; // zmienna z urla
     private String akcja = "";
-    private Date numer;
+    private numer numer;
     private String tabelkaHTML;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -63,7 +65,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
 
     @Override
     public String execute() throws Exception {
-        setNumer((Date) getSession().get("numer"));
+        setNumer((numer) getSession().get("numer"));
 
         if (getNumer() == null) {
             addActionMessage("Brak określonego miesiąca");
@@ -71,8 +73,10 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
         }
         if (getB().equals("ostatni")) //Wysylka klienci z ostatnim miesiacem prenumeraty
         {
+            numer _numer = getNumer();
+
             Calendar cal = Calendar.getInstance();
-            cal.setTime(getNumer());
+            cal.setTime(_numer.getData());
             int miesiac = cal.get(Calendar.MONTH) + 1;
             int rok = cal.get(Calendar.YEAR);
             System.out.print(miesiac + " -- " + rok + " all " + cal.toString() + " --> " + getNumer().toString());
@@ -80,7 +84,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
         } else if (getB().equals("przed")) //Przed ostatnia wysylka
         {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(getNumer());
+            cal.setTime(getNumer().getData());
             cal.add(Calendar.MONTH, 1);
             int miesiac = cal.get(Calendar.MONTH) + 1;
             int rok = cal.get(Calendar.YEAR);
@@ -89,7 +93,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
         } else if (getB().equals("reszta")) //Wysylka pozostali od numeru plus 1 miesiac
         {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(getNumer());
+            cal.setTime(getNumer().getData());
             cal.add(Calendar.MONTH, 1);
             setDaneKlient(klientFac.WysylkaALL(cal.getTime()));
             System.out.print("reszta " + getDaneKlient().size());
@@ -97,7 +101,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
             //Dopisac zapytanie do katur
         } else if (getB().equals("brak")) {
               Calendar cal = Calendar.getInstance();
-            cal.setTime(getNumer());
+            cal.setTime(getNumer().getData());
             cal.set(Calendar.DAY_OF_MONTH,1);// ustawiamy zawsze pierwszy danego miesiaca zaby dzien nie miał wplywu na nieprzedluzonych
             setDaneKlient(klientFac.WysylkaZrezygnowani(cal.getTime())); //nie przedluzyli
         } else {
@@ -212,7 +216,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
     public void setDaneKlient(Collection<Klient> DdaneKlient) {
         this.daneKlient = DdaneKlient;
     }
-
+ @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -222,7 +226,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private configFacadeLocal ConfigFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -280,14 +284,14 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
     /**
      * @return the numer
      */
-    public Date getNumer() {
+    public numer getNumer() {
         return numer;
     }
 
     /**
      * @param numer the numer to set
      */
-    public void setNumer(Date numer) {
+    public void setNumer(numer numer) {
         this.numer = numer;
     }
     /**

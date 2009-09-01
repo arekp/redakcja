@@ -26,4 +26,8 @@ public interface kontrahentFacadeLocal {
 
     List<kontrahent> findAll();
 
+    public java.util.List<klient.encje.kontrahent> findKontrahent(java.lang.String ciag);
+
+    public java.util.List<klient.encje.kontrahent> findTypKontrah(java.lang.String typ);
+
 }

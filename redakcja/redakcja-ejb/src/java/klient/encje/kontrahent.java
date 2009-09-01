@@ -35,7 +35,29 @@ public class kontrahent implements Serializable {
     private String urzadSkarbowy;
     private String numerKonta;
     private double stawka;
+     private String info;
 
+ public  kontrahent(){
+     
+ }
+
+    public  kontrahent( String typ, String imie, String nazwisko, String ulica, String miasto, String email, String tel,
+    String nip, String pesel, String urzadSkarbowy, String numerKonta,double stawka)
+    {
+    this.typ=typ;
+    this.imie=imie;
+    this.nazwisko=nazwisko;
+    this.ulica=ulica;
+    this.miasto=miasto;
+    this.email=email;
+    this.tel=tel;
+    this.nip=nip;
+    this.pesel=pesel;
+    this.urzadSkarbowy=urzadSkarbowy;
+    this.numerKonta=numerKonta;
+    this.stawka=stawka;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -235,5 +257,23 @@ public class kontrahent implements Serializable {
      */
     public void setStawka(double stawka) {
         this.stawka = stawka;
+    }
+
+    /**
+     * @return the info
+     */
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String info) {
+        this.info = info;
+    }
+    
+        public String getNazwiskoImie() {
+        return getNazwisko()+" "+getImie();
     }
 }

@@ -9,7 +9,11 @@
 
 
 <validators>
-
+ <field name="aadres">
+        <field-validator type="requiredstring">
+            <message>Adres jest polem wymaganym</message>
+        </field-validator>
+    </field>
     <field name="username">
 
         <field-validator type="requiredstring">

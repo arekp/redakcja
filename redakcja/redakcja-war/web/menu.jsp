@@ -22,8 +22,8 @@
         <li>  <h2>Numer</h2>
             <ul>
                 <li><a href="<s:url value="/klient/klient_newKlient.action"/>">Nowy Klient</a></li>
-                <!--li><a href="<!--s:url value="/numer_addFor.action"/>">Nowy Numer</a></li>
-                <li><a href="<!--s:url value="/numer_lista.action"/>">Lista numerów</a></li-->
+                <li><a href="<s:url value="/numer_addFor.action"/>">Nowy Numer</a></li>
+                <li><a href="<s:url value="/kontrahent/kontrahent_addFor.action"/>">Nowy Kontrahent</a></li>
 
             </ul>
         </li>
@@ -35,9 +35,9 @@
             Do wysyłki mamy
             <s:if test="#session.numer neq null">
                 <s:bean name="moduly.dane" id="uid">
-                    <s:param name="test" value="%{#session.numer}"/>
+                    <s:param name="test" value="%{#session.numer.data}"/>
                    <h1  align="center"><s:property value="%{iloscPren}" /></h1>
-                    dla numeru <s:date name="#session.numer" format="MM/yyyy" />
+                    dla numeru <s:date name="#session.numer.data" format="MM/yyyy" />
                 </s:bean>
             </s:if>
             <s:else>
@@ -60,7 +60,7 @@
                 <li><a href="<s:url value="/importy/zarzadca_import.action"/>">Import Zarządców</a></li>
                 <li><a href="<s:url value="/importy/zarzadca_wysylka.action"/>">Lista Zarządców do wysłania</a></li>
                 <li>    <form action="<s:url value="/klient/klient_numer.action"/>" method="post">
-                        <sx:datetimepicker label="Ustaw numer nad którym pracujesz" value="%{#session.numer}"  toggleType="explode" toggleDuration="500" name="numer" displayFormat="MM-yyyy" />
+                        <sx:datetimepicker label="Ustaw numer nad którym pracujesz" value="%{#session.numer.data}"  toggleType="explode" toggleDuration="500" name="numer" displayFormat="MM-yyyy" />
                         <input type="submit" value="ustaw miesiac" />
                     </form>
                 </li>

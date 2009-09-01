@@ -3,6 +3,5 @@
 
 <beans default-autowire="autodetect">
       <!-- add your spring beans here -->
-   
 
 </beans>

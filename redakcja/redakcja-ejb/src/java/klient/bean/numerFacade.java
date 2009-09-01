@@ -37,7 +37,7 @@ public class numerFacade implements numerFacadeLocal {
     }
 
     public List<numer> findAll() {
-        return em.createQuery("select object(o) from numer as o order by 1 asc").getResultList();
+        return em.createQuery("select object(o) from numer as o order by o.data desc").getResultList();
     }
 
 }

@@ -10,8 +10,8 @@
             <table style="font-size: 12px;">
                 <tr><td><input type="text" name="ciag" id="s" size="15"  /></td><td></td></tr>
                 <tr><td >Klient</td><td><input type="radio" name="szuk_akcja" value="klient" checked="checked" /></td></tr>
-                <tr><td>zarzadca</td><td><input type="radio" name="szuk_akcja" value="zarzadca" /></td></tr>
-                <!--tr><td>autor</td><td><input type="radio" name="szuk_akcja" value="autor" checked="checked" /></td></tr-->
+                <tr><td>Zarzadca</td><td><input type="radio" name="szuk_akcja" value="zarzadca" /></td></tr>
+                <tr><td>Kontrahent</td><td><input type="radio" name="szuk_akcja" value="kontrahent"  /></td></tr>
                 <tr><td><input type="submit" value="Szukaj"/></td><td></td></tr>
             </table>
         </div>

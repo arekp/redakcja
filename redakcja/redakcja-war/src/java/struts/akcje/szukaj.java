@@ -16,8 +16,10 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import klient.bean.KlientFacadeLocal;
+import klient.bean.kontrahentFacadeLocal;
 import klient.bean.zarzadcaFacadeLocal;
 import klient.encje.Klient;
+import klient.encje.kontrahent;
 import klient.encje.zarzadca;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -32,10 +34,13 @@ public class szukaj extends ActionSupport implements SessionAware {
     private String szuk_akcja;
     private Collection<Klient> daneKlient;
     private Collection<zarzadca> daneZarzadca;
+    private Collection<kontrahent> daneKontrahent;
     @EJB
     KlientFacadeLocal klientFac = (KlientFacadeLocal) KlientFacadeLocal();
     @EJB
     zarzadcaFacadeLocal zarzadcaFac = (zarzadcaFacadeLocal) ZarzadcaFacadeLocal();
+    @EJB
+    kontrahentFacadeLocal kontrahentFac = (kontrahentFacadeLocal) kontrahentFacadeLocal();
 
     public String execute() throws Exception {
 //        System.out.print("jestesmy w szukaj szukaj " + getCiag() + "  " + getSzuk_akcja());
@@ -53,8 +58,24 @@ public class szukaj extends ActionSupport implements SessionAware {
             List<zarzadca> dane = zarzadcaFac.szukajZarzadce('%' + getCiag() + '%');
             setDaneZarzadca(dane);
             getSession().put("body", "/zarzadca/lista.jsp");
+        } else if (getSzuk_akcja().equals("kontrahent")) //Szukamy i wyswietlamy dane kontrahenta
+        {
+            System.out.print("jestesmy w szukaj kontrahent " + getCiag());
+            List<kontrahent> dane =  kontrahentFac.findKontrahent(getCiag());
+            setDaneKontrahent(dane);
+            getSession().put("body", "/kontrahent/lista.jsp");
         }
         return "success";
+    }
+
+    private kontrahentFacadeLocal kontrahentFacadeLocal() {
+        try {
+            Context c = new InitialContext();
+            return (kontrahentFacadeLocal) c.lookup("redakcja/kontrahentFacade/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 
     /**
@@ -106,7 +127,8 @@ public class szukaj extends ActionSupport implements SessionAware {
     public void setDaneKlient(Collection<Klient> daneKlient) {
         this.daneKlient = daneKlient;
     }
- @AroundInvoke
+
+    @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -116,7 +138,8 @@ public class szukaj extends ActionSupport implements SessionAware {
             throw new RuntimeException(ne);
         }
     }
- @AroundInvoke
+
+    @AroundInvoke
     private zarzadcaFacadeLocal ZarzadcaFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -139,5 +162,19 @@ public class szukaj extends ActionSupport implements SessionAware {
      */
     public void setDaneZarzadca(Collection<zarzadca> daneZarzadca) {
         this.daneZarzadca = daneZarzadca;
+    }
+
+    /**
+     * @return the daneKontrahent
+     */
+    public Collection<kontrahent> getDaneKontrahent() {
+        return daneKontrahent;
+    }
+
+    /**
+     * @param daneKontrahent the daneKontrahent to set
+     */
+    public void setDaneKontrahent(Collection<kontrahent> daneKontrahent) {
+        this.daneKontrahent = daneKontrahent;
     }
 }

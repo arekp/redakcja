@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -293,7 +294,7 @@ public class zarzadcaAction extends ActionSupport {
             connection = null;
         }
     }
-
+ @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -303,7 +304,7 @@ public class zarzadcaAction extends ActionSupport {
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private configFacadeLocal ConfigFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -313,7 +314,7 @@ public class zarzadcaAction extends ActionSupport {
             throw new RuntimeException(ne);
         }
     }
-
+ @AroundInvoke
     private zarzadcaFacadeLocal ZarzadcaFacadeLocal() {
         try {
             Context c = new InitialContext();
