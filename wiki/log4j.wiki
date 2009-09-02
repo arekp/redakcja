@@ -8,7 +8,7 @@ Do pliku jboss-log4j.xml  dopisujemy
     <priority value="FATAL" />
 </category>
 
-<!-- anulowanie bedu ognl przy przaekazywaniu zmiennej  -->
+<!-- anulowanie bedu ognl przy przekazywaniu zmiennej  -->
 <category name="com.opensymphony.xwork2.ObjectFactory">
     <priority value="FATAL" />
 </category>
