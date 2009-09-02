@@ -1,8 +1,8 @@
-#co potrzeba samemu stworzyć w bazie aby aplikacja działał
+Co potrzeba samemu stworzyć w bazie aby aplikacja działał
 
 = Tablice dla użytkowników =
 Tworzymy dwie tablice w celu zarządzania użytkownikami portalu
-
+{{{
 DROP TABLE IF EXISTS `redakcja`.`users`;
 CREATE TABLE  `redakcja`.`users` (
   `login` varchar(50) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE  `redakcja`.`userroles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
+}}}
 
 Reszta tablic będzie tworzona automatycznie za pomocą komponentów encyjnych EJB3
 
