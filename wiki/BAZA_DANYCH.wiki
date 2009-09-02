@@ -1,0 +1,39 @@
+#co potrzeba samemu stworzyć w bazie aby aplikacja działał
+
+= Tablice dla użytkowników =
+Tworzymy dwie tablice w celu zarządzania użytkownikami portalu
+
+DROP TABLE IF EXISTS `redakcja`.`users`;
+CREATE TABLE  `redakcja`.`users` (
+  `login` varchar(50) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `enabled` varchar(45) DEFAULT NULL,
+  `imie` varchar(100) NOT NULL,
+  `nazwisko` varchar(100) NOT NULL,
+  `stanowisko` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`login`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `redakcja`.`userroles`;
+CREATE TABLE  `redakcja`.`userroles` (
+  `login` varchar(50) NOT NULL,
+  `role` varchar(45) NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+Reszta tablic będzie tworzona automatycznie za pomocą komponentów encyjnych EJB3
+
+
+
+= Dane konfiguracyjne =
+W celu poprawnego działania aplikacji należy wstawić pierwsze dane konfiguracyjne
+
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
