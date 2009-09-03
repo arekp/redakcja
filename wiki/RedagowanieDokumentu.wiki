@@ -1,0 +1,16 @@
+= Redagowanie dokumentu =
+Dokument składa się z trzech podstawowych etapów
+ * Nowy
+ * Redagowany
+ * W składzie
+
+== Nowy ==
+
+Nowy dokument występuje wtedy gdy autor lub reklamodawca dostarcza nam artykuł do druku.
+Dokument taki przypisany jest do osoby która dostarcza nam materiał.
+ Aby dodać nowy artykuł musimy wyszukać autora/reklamodawce. Na stronie ze szczegółami mamy link z możliwością dodawania.
+Po otwarciu strony dodaj artukuł potrzebujemy znać ilość znaków zawierających się w dokumencie i posiadać dokument w celu wstawienia do aplikacji.
+
+== Redagowany ==
+
+== W składzie ==
