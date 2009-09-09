@@ -28,9 +28,9 @@
         <span class="posted"><s:property value="kontrahent.typ" /></span>
         <a href="#" class="permalink">Stawka <strong><s:property value="kontrahent.stawka" /> PLN</a>
         <a href="<s:url value="/kontrahent/kontrahent_editForm.action?id="/><s:property value="kontrahent.id" />" class="comments">Edit</a>
-           <s:if test="kontrahent.typ=='Autor'">
+
         <a href="<s:url value="/dokument/dokument_addFor.action?id_kontrah="/><s:property value="kontrahent.id" />" class="comments">Dodaj dokument</a> .
-        </s:if>
+
 </p>
 </div>
 
@@ -47,9 +47,9 @@
             <jmesa:htmlColumn property="tytul" title="Tyluł"/>
             <jmesa:htmlColumn property="typ"  title="Typ"/>
             <jmesa:htmlColumn property="status"  title="Status"/>
-            <s:if test="kontrahent.typ=='Reklama'">
-                <jmesa:htmlColumn property="powierzchania" title="powierzchnia"/>
-            </s:if>
+           
+                <jmesa:htmlColumn property="powierzchnia" title="powierzchnia"/>
+        
             <jmesa:htmlColumn property="cena" title="cena"/>
             <jmesa:htmlColumn property="data" title="Data"/>
             <jmesa:htmlColumn  title="Akcja" >

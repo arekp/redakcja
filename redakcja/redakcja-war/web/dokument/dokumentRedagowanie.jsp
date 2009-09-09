@@ -17,7 +17,7 @@
 <s:elseif test="dokumentred.status=='Redagowany'">
     <ul>
 <li>
-    <a href="<s:url value="/dokument/dokument_wyslij.action?idDokument="/><s:property value="dokumentred.id"/>" >Wyślij dokument do redaktora </a> <s:property value="%{dokumentred.redaktor.nazwiskoImie}"/>
+    <a href="<s:url value="/dokument/dokument_wyslij.action?idDokumentReda="/><s:property value="dokumentred.id"/>" >Wyślij dokument do redaktora </a> <s:property value="%{dokumentred.redaktor.nazwiskoImie}"/>
     na adres <s:property value="%{dokumentred.redaktor.email}"/>
    </li>
    <li>

@@ -5,8 +5,7 @@
 package struts.akcje;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validation;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -32,7 +31,7 @@ import klient.bean.zamowieniaFacadeLocal;
 
 import klient.encje.adres;
 import klient.encje.zamowienia;
-import net.sf.jasperreports.engine.JasperCompileManager;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.jmesa.limit.Limit;

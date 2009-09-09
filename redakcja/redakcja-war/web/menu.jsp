@@ -59,11 +59,7 @@
             <ul>
                 <li><a href="<s:url value="/importy/zarzadca_import.action"/>">Import Zarządców</a></li>
                 <li><a href="<s:url value="/importy/zarzadca_wysylka.action"/>">Lista Zarządców do wysłania</a></li>
-                <li>    <form action="<s:url value="/klient/klient_numer.action"/>" method="post">
-                        <sx:datetimepicker label="Ustaw numer nad którym pracujesz" value="%{#session.numer.data}"  toggleType="explode" toggleDuration="500" name="numer" displayFormat="MM-yyyy" />
-                        <input type="submit" value="ustaw miesiac" />
-                    </form>
-                </li>
+
             </ul>
         </li>
     </authz:authorize>

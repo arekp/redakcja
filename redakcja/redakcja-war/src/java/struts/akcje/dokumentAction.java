@@ -5,30 +5,39 @@ package struts.akcje;
  */
 
 import com.opensymphony.xwork2.ActionSupport;
+
 import freemarker.core.ParseException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import klient.bean.configFacadeLocal;
 import klient.bean.dokumentFacadeLocal;
+import klient.bean.grupaDokFacadeLocal;
 import klient.bean.kontrahentFacadeLocal;
 import klient.bean.plikFacadeLocal;
 import klient.encje.dokument;
+import klient.encje.grupaDok;
 import klient.encje.kontrahent;
 import klient.encje.plik;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.SessionAware;
+
+import util.sendMailLocal;
 
 /**
  *
@@ -46,6 +55,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
     private Long idRodzica;
     private String idDokumentu;
     private String idDokumentReda;
+    private String idGrupy;
     private kontrahent kontrahent;
     private kontrahent redaktor;// id z tablicy autor z flaga redaktor osoba przypisana do redagowania tekstu
     private String typ;//tablica DIC_FLAGA Flaga(Artukul,reklama,michalki)
@@ -64,6 +74,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
     private Collection<dokument> listaDokumentow;
     private Collection<dokument> listaDokumentowDzieci;
     private Collection<kontrahent> listaRedaktorow;
+    private Collection<grupaDok> listaGrup;
     private dokument dokument;
     private dokument dokumentred;
     private plik plik;
@@ -75,14 +86,19 @@ public class dokumentAction extends ActionSupport implements SessionAware {
     plikFacadeLocal plikFac = (plikFacadeLocal) plikFacadeLocal();
     @EJB
     kontrahentFacadeLocal kontrahentFac = (kontrahentFacadeLocal) kontrahentFacadeLocal();
+    @EJB
+    sendMailLocal sendMailFac = (sendMailLocal) sendMailLocal();
+    @EJB
+    grupaDokFacadeLocal grupaDokFac = (grupaDokFacadeLocal) grupaDokFacadeLocal();
 
     @Override
     public String execute() throws Exception {
-        System.out.print("Mamy dane  " + getId_kontrah() + " " + getIdDokumentu() + " " + getIdDokumentReda() + " B " + getB());
+        System.out.print("Mamy dane  " + getTyp() + " " + getId_kontrah() + " " + getIdDokumentu() + " " + getIdDokumentReda() + " B " + getB() + " --> " + getIdGrupy());
         if (getB().equals("addFor")) //Dodajemy numer formularz
         {
             kontrahent _kontrahent = kontrahentFac.find(Long.parseLong(getId_kontrah()));
-            System.out.print("Wysyłamu " + _kontrahent.getId());
+            setListaGrup(grupaDokFac.findAll());
+//            System.out.print("Wysyłamu " + _kontrahent.getId());
             setKontrahent(_kontrahent);
             getSession().put("body", "/dokument/dokAdd.jsp");
         } else if (getB().equals("add")) //Dodaje dokument
@@ -97,25 +113,50 @@ public class dokumentAction extends ActionSupport implements SessionAware {
                 addFieldError("file", "Musisz załączyć plik");
                 blad = true;
             }
-            if (getIloscZnakow() == 0) {
+            if ((getIloscZnakow() == 0) && (!getTyp().equals("Reklama"))) {
                 addFieldError("iloscZnakow", "Musisz podać ilość znaków");
+
                 blad = true;
             }
             if (blad) {
+                setId_kontrah(getId_kontrah());
+                setListaGrup(grupaDokFac.findAll());
                 return "success";
             }
 
             dokument _dokument = new dokument();
             _dokument.setData(new Date());
-            _dokument.setCena(getCena());
-            kontrahent _kontrahent = kontrahentFac.find(Long.parseLong(getId_kontrah()));
 
-            _dokument.setPowierzchnia(getPowierzchnia());
-            _dokument.setStatus("Nowy");
+            _dokument.setCena(getCena());
             _dokument.setTyp(getTyp());
-            _dokument.setIloscZnakow(getIloscZnakow());
             _dokument.setTytul(getTytul());
-            dokumentFac.create(_dokument);
+            _dokument.setNrStrony("0");
+            kontrahent _kontrahent = kontrahentFac.find(Long.parseLong(getId_kontrah()));
+            String znakiPDF = configFac.findWartosc("ilosc.zankow.strona.skladu").getWartosc();
+//sprawdzanie czy kontahent jest reklamodawca 
+//            _dokument.setPowierzchnia(Double.parseDouble(getPowierzchnia()));
+             System.out.print("Przed dane do reklamy");
+            if (getTyp().equals("Reklama")) {
+                    System.out.print("START dane do reklamy");
+                _dokument.setStatus("Zamkniete");
+                _dokument.setIloscZnakow(0);
+                _dokument.setPowierzchnia(new BigDecimal(getPowierzchnia()).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+//                _dokument.setGrupa(null);
+                System.out.print("mamy dane do reklamy");
+                 dokumentFac.create(_dokument);
+            } else {
+                _dokument.setStatus("Nowy");
+                _dokument.setIloscZnakow(getIloscZnakow());
+                double pow = getIloscZnakow() / Double.parseDouble(znakiPDF);
+                System.out.print("pow " + pow);
+//            _dokument.setPowierzchnia(new DecimalFormat("#,##0.00").format(pow));
+                _dokument.setPowierzchnia(new BigDecimal(pow).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                System.out.print("pow " + _dokument.getPowierzchnia());
+                grupaDok _grupaDok = grupaDokFac.find(Long.parseLong(getIdGrupy()));
+                System.out.print("mamy dane do grupa " + _grupaDok.getNazwa());
+                 dokumentFac.create(_dokument);
+                _dokument.setGrupa(_grupaDok);
+            }
 
             System.out.print("Mamay kontrache" + _kontrahent.getId());
             _dokument.setKont(_kontrahent);
@@ -134,6 +175,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
             }
             setKontrahent(kontrahentFac.find(Long.parseLong(getId_kontrah())));
             setListaDokumentow(dokumentFac.ListaDokumentowKontra(kontrahentFac.find(Long.parseLong(getId_kontrah()))));
+
             getSession().put("body", "/kontrahent/kontrahentInfo.jsp");
 
         } else if (getB().equals("info")) {
@@ -169,7 +211,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
                 blad = true;
             }
             if (blad) {
-                 this.info();
+                this.info();
                 return "success";
             }
 
@@ -179,6 +221,22 @@ public class dokumentAction extends ActionSupport implements SessionAware {
 
         } else if (getB().equals("modifForm")) {
 
+            getSession().put("body", "/dokument/dokumentInfo.jsp");
+        } else if (getB().equals("strona")) {
+            this.strona();
+            this.info();
+        } else if (getB().equals("wyslij")) {
+            dokument _dokument = dokumentFac.find(Long.parseLong(getIdDokumentReda()));
+            setIdDokumentu(_dokument.getIdRodzica().toString());
+            String katalog = configFac.findWartosc("dokumenty.lokalizacja").getWartosc();
+            String cc = configFac.findWartosc("mail.cc").getWartosc();
+            plik _plik = plikFac.findPlik(_dokument.getId(), "dokument");
+            String url = katalog + _plik.getUrl() + "\\" + _plik.getFilename();
+            String body = "\t Redakcja Administratora zlecił ci zredagowanie dokumentu " + _dokument.getTytul() + " \n Po skończeniu pracy proszę o odesłanie poprawionego dokumetu na adres zwrotny \n" +
+                    "\n \n Pozdrawiam \n Sekretarz Redakcji";
+            sendMailFac.sendMsg(_dokument.getRedaktor().getEmail(), cc, "Do Zredagowania: " + _dokument.getTytul(), body, url);
+
+            this.info();
             getSession().put("body", "/dokument/dokumentInfo.jsp");
         }
 
@@ -190,17 +248,25 @@ public class dokumentAction extends ActionSupport implements SessionAware {
 
         this.zamknij();
         String znakiNaStrone = configFac.findWartosc("ilosc.znakow.strona.maszynopisu").getWartosc();
+        String znakiPDF = configFac.findWartosc("ilosc.zankow.strona.skladu").getWartosc();
         dokument _dokument = dokumentFac.find(Long.parseLong(getIdDokumentu()));
-           System.out.print("zaribil autor " + getIloscZnakow());
+        System.out.print("zaribil autor " + getIloscZnakow());
         _dokument.setStatus("Zamkniete");
         _dokument.setIloscZnakow(getIloscZnakow());
         double iloscZnak = Double.parseDouble(znakiNaStrone);
         System.out.print("zaribil autor " + iloscZnak);
         double iloscStron = _dokument.getIloscZnakow() / iloscZnak;
-        System.out.print("zaribil autor " + iloscStron+" ---> "+_dokument.getKont().getStawka());
+        System.out.print("zaribil autor " + iloscStron + " ---> " + _dokument.getKont().getStawka());
         double zarobil = iloscStron * _dokument.getKont().getStawka();
         System.out.print("zaribil autor " + zarobil);
-        _dokument.setCena(zarobil);
+        _dokument.setCena(new BigDecimal(zarobil).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+        System.out.print("zajmuje  " + getIloscZnakow() + " --> " + Integer.parseInt(znakiPDF));
+        double pow = getIloscZnakow() / Double.parseDouble(znakiPDF);
+        System.out.print("zajmuje  " + pow);
+        System.out.print("zajmuje  2 " + new DecimalFormat("#,##0.00").format(pow));
+//        _dokument.setPowierzchnia(new DecimalFormat("#,##0.00").format(pow));
+        _dokument.setPowierzchnia(new BigDecimal(pow).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+
         dokumentFac.edit(_dokument);
     }
 
@@ -209,6 +275,8 @@ public class dokumentAction extends ActionSupport implements SessionAware {
         dokument _dokument = dokumentFac.find(Long.parseLong(getIdDokumentReda()));
         plik _plik = plikFac.findPlik(Long.parseLong(getIdDokumentReda()), "dokument");
         String idSkladu = configFac.findWartosc("sklad.id").getWartosc();
+        String katalog = configFac.findWartosc("dokumenty.lokalizacja").getWartosc();
+        String cc = configFac.findWartosc("mail.cc").getWartosc();
         kontrahent _redaktor = kontrahentFac.find(Long.parseLong(idSkladu));//komu przypisaliśmy
         //Mamy kopie dokumentu
         dokument _dokumentNew = new dokument(_dokument.getTytul(), _dokument.getCena(), _dokument.getIdRodzica(), _dokument.getIloscZnakow(), _dokument.getNrStrony(), _dokument.getPowierzchnia(), _dokument.getStatus(), _dokument.getTyp());
@@ -235,6 +303,18 @@ public class dokumentAction extends ActionSupport implements SessionAware {
 
         setIdDokumentu(_dokumentNew.getIdRodzica().toString());//Wracamy z dokumentem rodzicem
         setIdDokumentReda(null);
+
+//        Wysyłamy maila z dokumentem do składu
+
+        String url = katalog + _plikNew.getUrl() + "\\" + _plikNew.getFilename();
+        String body = "\t Proszę o złożenie dokumentu \" " + _dokumentNew.getTytul() + " \" i odesłanie gotowego pdf'a na adres zwrotny .\n \n \n Pozdrawiam \n Sekretarz Redakcji";
+        try {
+            sendMailFac.sendMsg(_dokumentNew.getRedaktor().getEmail(), cc, "Dokument do składu " + _dokumentNew.getTytul(), body, url);
+        } catch (Exception ex) {
+            addActionError("Problemy z wysłaniem maila do składu.");
+            Logger.getLogger(dokumentAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.info();
     }
 
@@ -321,7 +401,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
         double iloscStron = _dokument.getIloscZnakow() / iloscZnak;
         double zarobil = iloscStron * _dokument.getRedaktor().getStawka();
         System.out.print("zaribil " + zarobil);
-        _dokument.setCena(zarobil);
+        _dokument.setCena(new BigDecimal(zarobil).setScale(2, BigDecimal.ROUND_UP).doubleValue());
         dokumentFac.edit(_dokument);
         setIdDokumentu(_dokument.getIdRodzica().toString());
         setIdDokumentReda(null);
@@ -333,8 +413,9 @@ public class dokumentAction extends ActionSupport implements SessionAware {
         setListaRedaktorow(kontrahentFac.findTypKontrah("Redaktor"));
         setDokument(dokumentFac.find(Long.parseLong(getIdDokumentu())));
         setListaDokumentowDzieci(dokumentFac.ListaDokumentowDzieci(Long.parseLong(getIdDokumentu())));
+        setListaGrup(grupaDokFac.findAll());
         Long i = dokumentFac.MAXIdDokumentuDziecka(Long.parseLong(getIdDokumentu()));
-        System.out.print("numer dok do redagowania " + i);
+        System.out.print("numer dok do redagowania " + i + " i grup " + getListaGrup().size());
         try {
             if (i == null) {
                 setIdDokumentReda("0");
@@ -407,6 +488,34 @@ public class dokumentAction extends ActionSupport implements SessionAware {
 
         FileUtils.copyFile(aFile, new File(katalog + url + "\\" + getFileFileName()));
 
+    }
+
+    private sendMailLocal sendMailLocal() {
+        try {
+            Context c = new InitialContext();
+            return (sendMailLocal) c.lookup("redakcja/sendMailBean/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private void strona() {
+        dokument _dokument = dokumentFac.find(Long.parseLong(getIdDokumentu()));
+        grupaDok _grupaDok = grupaDokFac.find(Long.parseLong(getIdGrupy()));
+        _dokument.setNrStrony(getNrStrony());
+        _dokument.setGrupa(_grupaDok);
+        dokumentFac.edit(_dokument);
+    }
+
+    private grupaDokFacadeLocal grupaDokFacadeLocal() {
+        try {
+            Context c = new InitialContext();
+            return (grupaDokFacadeLocal) c.lookup("redakcja/grupaDokFacade/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 
     private kontrahentFacadeLocal kontrahentFacadeLocal() {
@@ -805,5 +914,33 @@ public class dokumentAction extends ActionSupport implements SessionAware {
      */
     public void setDokumentred(dokument dokumentred) {
         this.dokumentred = dokumentred;
+    }
+
+    /**
+     * @return the idGrupy
+     */
+    public String getIdGrupy() {
+        return idGrupy;
+    }
+
+    /**
+     * @param idGrupy the idGrupy to set
+     */
+    public void setIdGrupy(String idGrupy) {
+        this.idGrupy = idGrupy;
+    }
+
+    /**
+     * @return the listaGrup
+     */
+    public Collection<grupaDok> getListaGrup() {
+        return listaGrup;
+    }
+
+    /**
+     * @param listaGrup the listaGrup to set
+     */
+    public void setListaGrup(Collection<grupaDok> listaGrup) {
+        this.listaGrup = listaGrup;
     }
 }

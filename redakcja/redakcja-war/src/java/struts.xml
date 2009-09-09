@@ -68,7 +68,10 @@
  <!--    Configuration for the default package.extends="struts-default" tiles-default -->
  
     <package name="Start" extends="struts-default">
-
+        <result-types>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+        </result-types>
+        
         <action name="witam" class="example.HelloWorld" >
             <result name="success" >/index.jsp</result>
         </action>
@@ -98,6 +101,21 @@
                 <param name="contentType">${contentType}</param>
                <!--param name="contentLength">${wielkoscpliku}</param-->
                 <!--param name="bufferSize">1024</param-->
+            </result>
+            <result name="spisTresci" type="jasper" >
+                <param name="location">/raport/spis.jasper</param>
+                <param name="dataSource">daneDokumenty</param>
+                <param name="format">PDF</param>
+            </result>
+            <result name="honorariaPlace" type="jasper" >
+                <param name="location">/raport/honorariaPlace.jasper</param>
+                <param name="dataSource">daneDokumenty</param>
+                <param name="format">PDF</param>
+            </result>
+            <result name="honoraria" type="jasper" >
+                <param name="location">/raport/honoraria.jasper</param>
+                <param name="dataSource">daneDokumenty</param>
+                <param name="format">PDF</param>
             </result>
         </action>
 

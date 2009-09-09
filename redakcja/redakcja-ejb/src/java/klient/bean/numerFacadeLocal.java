@@ -7,6 +7,7 @@ package klient.bean;
 
 import java.util.List;
 import javax.ejb.Local;
+import klient.encje.dokument;
 import klient.encje.numer;
 
 /**
@@ -25,5 +26,7 @@ public interface numerFacadeLocal {
     numer find(Object id);
 
     List<numer> findAll();
+
+    public java.util.List<dokument> ListaSpisTresci(java.lang.Long idnumer);
 
 }

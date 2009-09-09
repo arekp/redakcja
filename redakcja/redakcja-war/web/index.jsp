@@ -22,7 +22,7 @@
 		<li><a href="<s:url value="/"/>">Start</a></li>
 		<li class="current_page_item"><a href="#">Klienci</a></li>
         <li><a href="<s:url value="/numer_lista.action"/>">NUMER <s:date name="#session.numer.data" format="MM/yyyy" /></a></li>
-		<li><a href="#">Raporty</a></li>
+		<li><a href="<s:url value="/numer_raport.action"/>">Raporty</a></li>
 		<li><a href="#">Skład</a></li>
 	</ul>
 </div>

@@ -318,12 +318,14 @@ exists or setup the property manually. For example like this:
     <target depends="compile" name="library-inclusion-in-archive">
         <copyfiles files="${file.reference.mysql-connector-java-5.0.8-bin.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.ejb3-persistence.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.mail.jar}" todir="${build.classes.dir}"/>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${file.reference.mysql-connector-java-5.0.8-bin.jar}" manifestproperty="manifest.file.reference.mysql-connector-java-5.0.8-bin.jar" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.ejb3-persistence.classpath}" manifestproperty="manifest.libs.ejb3-persistence.classpath" todir="${dist.ear.dir}"/>
+        <copyfiles files="${file.reference.mail.jar}" manifestproperty="manifest.file.reference.mail.jar" todir="${dist.ear.dir}"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.file.reference.mysql-connector-java-5.0.8-bin.jar} ${manifest.libs.ejb3-persistence.classpath} "/>
+            <attribute name="Class-Path" value="${manifest.file.reference.mysql-connector-java-5.0.8-bin.jar} ${manifest.libs.ejb3-persistence.classpath} ${manifest.file.reference.mail.jar} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">

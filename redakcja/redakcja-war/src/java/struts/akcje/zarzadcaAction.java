@@ -237,6 +237,7 @@ public class zarzadcaAction extends ActionSupport {
 //                        System.out.print("------------->  " + temp1.length +" mamy "+temp1[0]+"-- ul."+temp1[1]);
                             } else {//wstawiamy w pole adres wszystko
                                 miasto = temp1[0];
+                                ulica="";
                                 System.out.print("------------->  " + temp1.length + " mamy " + temp1[0]);
                             }
                             wojew = temp[7];

@@ -13,6 +13,7 @@
     <h2 class="title"><a href="#">Numer <s:property value="#session.numer.nazwa" /></a></h2>
     <div class="entry" >
         <p><s:property value="#session.numer.info" /></p>
+        <p>Do numeru mamy około <s:property value="%{powierzchnia}" /> stron.</p>
         <table>
             <tr>
                 <td>
@@ -71,8 +72,9 @@
                             <jmesa:htmlColumn property="tytul" title="Tyluł"/>
                             <jmesa:htmlColumn property="typ"  title="Typ"/>
                             <!--jmesa:htmlColumn property="powierzchania" title="powierzchnia"/-->
-                            <jmesa:htmlColumn property="cena" title="cena"/>
+                            <jmesa:htmlColumn property="cena" title="Koszt"/>
                             <jmesa:htmlColumn property="status" title="Status"/>
+                            <jmesa:htmlColumn property="powierzchnia" title="Powierzchnia"/>
                             <s:if test="#session.numer.status == 'Otwarty'">
                                 <jmesa:htmlColumn  title="Akcja" >
                                     <a href="<s:url value="/numer_remDok.action?idDokumentu="/>${beandaneDokumenty.id}">Usuń z numeru</a>

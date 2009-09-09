@@ -37,18 +37,19 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
     private String tel;
     private String nip;
     private String pesel;
-        private String info;
+    private String info;
     private String urzadSkarbowy;
     private String numerKonta;
-    private double stawka;
+//    private double stawka;
+    private String stawka;
     private String id;
     private Collection<kontrahent> daneKontrahent;
-   private Collection<dokument> listaDokumentow;
+    private Collection<dokument> listaDokumentow;
     private kontrahent kontrahent;
-    private 
+    private
     @EJB
     kontrahentFacadeLocal kontrahentFac = (kontrahentFacadeLocal) kontrahentFacadeLocal();
-   @EJB
+    @EJB
     dokumentFacadeLocal dokumentFac = (dokumentFacadeLocal) dokumentFacadeLocal();
 
     @Override
@@ -59,18 +60,24 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
         } else if (getB().equals("add")) //Dodaje numer
         {
             kontrahent _kontrahent = new kontrahent(getTyp(), getImie(), getNazwisko(), getUlica(), getMiasto(), getEmail(), getTel(),
-                    getNip(), getPesel(), getUrzadSkarbowy(), getNumerKonta(), getStawka());
+                    getNip(), getPesel(), getUrzadSkarbowy(), getNumerKonta(), Double.parseDouble(getStawka()));
+            // Double.parseDouble(
             kontrahentFac.create(_kontrahent);
             setKontrahent(_kontrahent);
+            if (_kontrahent.getTyp().equals("Redaktor")) {
+                setListaDokumentow(dokumentFac.ListaDokumentowRedaktora(getKontrahent()));
+            } else {
+                setListaDokumentow(dokumentFac.ListaDokumentowKontra(getKontrahent()));
+            }
             getSession().put("body", "/kontrahent/kontrahentInfo.jsp");
 
         } else if (getB().equals("info")) //strona informacyjna kontrahenta
         {
             kontrahent _kontrahent = kontrahentFac.find(Long.parseLong(getId()));
             setKontrahent(_kontrahent);
-            if (_kontrahent.getTyp().equals("Redaktor")){
-                   setListaDokumentow(dokumentFac.ListaDokumentowRedaktora(getKontrahent()));
-            }else {
+            if (_kontrahent.getTyp().equals("Redaktor")) {
+                setListaDokumentow(dokumentFac.ListaDokumentowRedaktora(getKontrahent()));
+            } else {
                 setListaDokumentow(dokumentFac.ListaDokumentowKontra(getKontrahent()));
             }
             getSession().put("body", "/kontrahent/kontrahentInfo.jsp");
@@ -80,8 +87,9 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
             setKontrahent(_kontrahent);
             getSession().put("body", "/kontrahent/kontrahentEdit.jsp");
         } else if (getB().equals("edit")) //edycja danych
-        {System.out.print("dostalismy "+getId()+"---> "+getStawka());
-                     
+        {
+            System.out.print("dostalismy " + getId() + "---> " + getStawka());
+
             kontrahent _kontrahent = kontrahentFac.find(Long.parseLong(getId()));
             _kontrahent.setEmail(getEmail());
             _kontrahent.setImie(getImie());
@@ -94,17 +102,18 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
             _kontrahent.setPesel(getPesel());
             _kontrahent.setUrzadSkarbowy(getUrzadSkarbowy());
             _kontrahent.setNumerKonta(getNumerKonta());
-            _kontrahent.setStawka(getStawka());
+            _kontrahent.setStawka(Double.parseDouble(getStawka()));
+//            _kontrahent.setStawka(getStawka());
             _kontrahent.setInfo(getInfo());
             kontrahentFac.edit(_kontrahent);
             setKontrahent(_kontrahent);
-               setListaDokumentow(dokumentFac.ListaDokumentowKontra(getKontrahent()));
+            setListaDokumentow(dokumentFac.ListaDokumentowKontra(getKontrahent()));
             getSession().put("body", "/kontrahent/kontrahentInfo.jsp");
         }
         return "success";
     }
 
-        private dokumentFacadeLocal dokumentFacadeLocal() {
+    private dokumentFacadeLocal dokumentFacadeLocal() {
         try {
             Context c = new InitialContext();
             return (dokumentFacadeLocal) c.lookup("redakcja/dokumentFacade/local");
@@ -113,6 +122,7 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
             throw new RuntimeException(ne);
         }
     }
+
     private kontrahentFacadeLocal kontrahentFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -302,17 +312,17 @@ public class kontrahentAction extends ActionSupport implements SessionAware {
     /**
      * @return the stawka
      */
-    public double getStawka() {
+    public String getStawka() {
         return stawka;
     }
 
     /**
      * @param stawka the stawka to set
      */
-    public void setStawka(double stawka) {
-        System.out.print("w SET "+stawka);
+    public void setStawka(String stawka) {
+        System.out.print("w SET " + stawka);
 //        this.stawka = Double.parseDouble(stawka);
-         this.stawka =stawka;
+        this.stawka = stawka;
     }
 
     /**

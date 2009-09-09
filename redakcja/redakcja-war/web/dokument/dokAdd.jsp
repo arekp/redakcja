@@ -12,11 +12,14 @@
             <s:textfield name="powierzchnia" label="Powierzchnia " value="%{powierzchnia}" size="20"/>
             <s:textfield name="cena" label="cena" value="%{cena}" size="20"/>
             <s:textfield name="typ" value="Reklama" readonly="true"/>
+
         </s:if><s:else>
             <s:textfield name="iloscZnakow" label="Ilość znaków" value="%{iloscZnakow}" size="20"/>
             <s:select label="Typ" name="typ"
                       value="%{typ}"
-                      headerKey="1" list="{'Artukuł','Michałki'}" />
+                      headerKey="1" list="{'Artykuł','Michałki'}" />
+                         <s:select label="Grupa Artykułów" name="idGrupy" list="listaGrup"
+    listKey="id" listValue="nazwa" multiple="false"  required="true" headerValue="%{dokument.grupa.nazwa}"/>
         </s:else>
         <s:file  name="file"  label="File" required="true"/>
         <s:submit value="Dodaj Artukuł"/>

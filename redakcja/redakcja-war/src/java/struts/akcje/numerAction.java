@@ -4,31 +4,33 @@
  */
 package struts.akcje;
 
+import bean.spisTresci;
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 //import java.io.ObjectOutputStream;
+
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
+
 import java.util.Map;
-import java.util.StringTokenizer;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.interceptor.AroundInvoke;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import klient.bean.configFacadeLocal;
 import klient.bean.dokumentFacadeLocal;
-import klient.bean.numerFacade;
+
 import klient.bean.numerFacadeLocal;
 
 //import klient.encje.numer;
@@ -38,6 +40,7 @@ import klient.bean.plikFacadeLocal;
 import klient.encje.dokument;
 import klient.encje.numer;
 import klient.encje.plik;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -60,12 +63,15 @@ public class numerAction extends ActionSupport implements SessionAware {
     private String contentType;//  typ pliku jaki mamy
     private String filename;
     private Long wielkoscpliku; // progres bar do wysyłania
+    private double powierzchnia;
 //    private String contentDisposition;//nazwa pod jaka widaczny jest dokument pobierany
     private InputStream inputStream;
     private Collection<numer> daneNumer;
     private Collection<plik> danePliki;
     private Collection<dokument> daneDokumenty;
     private Collection<dokument> daneDokumentyWolne;
+    private Collection<spisTresci> daneSpisTresci;
+
     @EJB
     numerFacadeLocal numerFac = (numerFacadeLocal) numerFacadeLocal();
     @EJB
@@ -80,7 +86,11 @@ public class numerAction extends ActionSupport implements SessionAware {
         if (getB().equals("addFor")) //Dodajemy numer formularz
         {
             getSession().put("body", "/numer/numerAdd.jsp");
-        } else if (getB().equals("add")) //Dodaje numer
+        }
+        else if (getB().equals("raport")) //strona z raportami
+        { getSession().put("body", "/numer/numerRaporty.jsp");
+        }
+        else if (getB().equals("add")) //Dodaje numer
         {
             numer nu = new numer(getNazwa(), "", getInfo(), "Otwarty", 0, getData());
             numerFac.create(nu);
@@ -102,6 +112,7 @@ public class numerAction extends ActionSupport implements SessionAware {
             System.out.print("contentType  " + getContentType());
             ZapiszPlik(file);
             numer _numer = numerFac.find(Long.valueOf(getId()).longValue());
+
              this.dane(_numer);
 //            setDanePliki(plikFac.findPliki(Long.valueOf(getId()).longValue(), "numer"));
             this.dane(_numer);
@@ -150,6 +161,33 @@ public class numerAction extends ActionSupport implements SessionAware {
             dokumentFac.edit(_dokument);
             this.dane(_numer);
             getSession().put("body", "/numer/numerInfo.jsp");
+        } else if (getB().equals("spis")) //Raport dla spisu treści
+        {
+            numer _numer = (numer) getSession().get("numer");
+            System.out.print("numer "+_numer.getNazwa());
+              setDaneDokumenty(dokumentFac.ListaSpisTresci(_numer.getId()));
+               System.out.print("numer "+_numer.getNazwa()+getDaneDokumenty().size());
+              this.spisTresci();
+            return "spisTresci";
+
+        }else if (getB().equals("honorariaPlace")) //Raport dla spisu treści
+        {
+            numer _numer = (numer) getSession().get("numer");
+            System.out.print("numer "+_numer.getNazwa());
+              setDaneDokumenty(dokumentFac.ListaHonoraria(_numer.getId()));
+//               System.out.print("numer "+_numer.getNazwa()+getDaneDokumenty().size());
+              this.honorariaPlace();
+            return "honorariaPlace";
+
+        }else if (getB().equals("honoraria")) //Raport dla spisu treści
+        {
+            numer _numer = (numer) getSession().get("numer");
+            System.out.print("numer "+_numer.getNazwa());
+              setDaneDokumenty(dokumentFac.ListaHonoraria(_numer.getId()));
+//               System.out.print("numer "+_numer.getNazwa()+getDaneDokumenty().size());
+              this.honoraria();
+            return "honoraria";
+
         }
         return "success";
     }
@@ -158,7 +196,8 @@ public class numerAction extends ActionSupport implements SessionAware {
         setDanePliki(plikFac.findPliki(_numer.getId(), "numer"));
         setDaneDokumenty(dokumentFac.ListaDokumentowNumeru(_numer));
         setDaneDokumentyWolne(dokumentFac.ListaDokumentowWolna());
-
+        System.out.print(" pomierzchnia "+dokumentFac.SumaPowierzchniNumer(_numer.getId()));
+    setPowierzchnia(dokumentFac.SumaPowierzchniNumer(_numer.getId()));
 
     }
 
@@ -215,6 +254,30 @@ public class numerAction extends ActionSupport implements SessionAware {
 
         FileUtils.copyFile(aFile, new File(katalog + url + "\\" + getFilename()));
 
+    }
+
+    private void honoraria() {
+             try {
+            String katalog = configFac.findWartosc("raporty.lokalizacja.etykiety").getWartosc();
+                   String katalogjboss = configFac.findWartosc("raporty.lokalizacja.jboss").getWartosc();
+            JasperCompileManager.compileReportToFile(
+                    katalogjboss + "honoraria.jrxml",
+                    katalogjboss + "honoraria.jasper");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void honorariaPlace() {
+         try {
+            String katalog = configFac.findWartosc("raporty.lokalizacja.etykiety").getWartosc();
+                   String katalogjboss = configFac.findWartosc("raporty.lokalizacja.jboss").getWartosc();
+            JasperCompileManager.compileReportToFile(
+                    katalogjboss + "honorariaPlace.jrxml",
+                    katalogjboss + "honorariaPlace.jasper");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private plikFacadeLocal plikFacadeLocal() {
@@ -522,17 +585,46 @@ public class numerAction extends ActionSupport implements SessionAware {
     public void setIdDokumentu(String idDokumentu) {
         this.idDokumentu = idDokumentu;
     }
+
     /**
-     * @param daneNumer the daneNumer to set
+     * @return the powierzchnia
      */
-//    public void setDaneNumer(Collection<numer> daneNumer) {
-//        this.setDaneNumer(daneNumer);
-//    }
-//
-//    /**
-//     * @param daneNumer the daneNumer to set
-//     */
-//    public void setDaneNumer(Collection<numer> daneNumer) {
-//        this.daneNumer = daneNumer;
-//    }
+    public double getPowierzchnia() {
+        return powierzchnia;
+    }
+
+    /**
+     * @param powierzchnia the powierzchnia to set
+     */
+    public void setPowierzchnia(double powierzchnia) {
+        this.powierzchnia = powierzchnia;
+    }
+
+    /**
+     * @return the daneSpisTresci
+     */
+    public Collection<spisTresci> getDaneSpisTresci() {
+        return daneSpisTresci;
+    }
+
+    /**
+     * @param daneSpisTresci the daneSpisTresci to set
+     */
+    public void setDaneSpisTresci(Collection<spisTresci> daneSpisTresci) {
+        this.daneSpisTresci = daneSpisTresci;
+    }
+
+    private void spisTresci() {
+         try {
+            String katalog = configFac.findWartosc("raporty.lokalizacja.etykiety").getWartosc();
+                   String katalogjboss = configFac.findWartosc("raporty.lokalizacja.jboss").getWartosc();
+            JasperCompileManager.compileReportToFile(
+                    katalogjboss + "spis.jrxml",
+                    katalogjboss + "spis.jasper");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

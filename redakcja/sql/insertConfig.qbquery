@@ -1,0 +1,16 @@
+﻿INSERT INTO config (klucz,opis,wartosc)VALUE('raporty.lokalizacja.etykiety','Lokalizacja raportu dla wydrukow wtykiet','E:\\projekty\\redakcja\\portal\\redakcja\\redakcja-war\\web\\raport\\');
+INSERT INTO config (klucz,opis,wartosc)VALUE('zarzadca.id.ost.zaimport','id ostatniego zaimportowanego zarzadcy ogranicza od jakiedo numeru pobieramy','0');
+INSERT INTO config (klucz,opis,wartosc)VALUE('zarzadca.id.ost.wysla','id ostatniego wysłanego zarzadcy','0');
+INSERT INTO config (klucz,opis,wartosc)VALUE('zarzadca.data.import','data ostatniego importu','null');
+INSERT INTO config (klucz,opis,wartosc)VALUE('zarzadca.ost.blok','numer ostatniego bloku jaki pobralismy czyli od niego zaczniemy','');
+INSERT INTO config (klucz,opis,wartosc)VALUE('zarzadca.maxhits','max ilosc blokow do pobrania ostatnio','0');
+
+
+INSERT INTO config (klucz,opis,wartosc)VALUE('ilosc.znakow.strona.maszynopisu','ilosc znaków na stronie maszynopisu','1800');
+INSERT INTO config (klucz,opis,wartosc)VALUE('ilosc.zankow.strona.skladu','Ilosc znaków mieszczacych sie na stronie pdf','4800');
+INSERT INTO config (klucz,opis,wartosc)VALUE('dokumenty.lokalizacja','Lokalizacja dokumentow','E:\tmp\dokumenty');
+INSERT INTO config (klucz,opis,wartosc)VALUE('sklad.id','numer kontrahenta pod ktorym miesci sie wysylka do skladu','');
+INSERT INTO config (klucz,opis,wartosc)VALUE('mail.cc','maile z aplikacji wysyłane do w celu sprawdzenia poprawnosci wysyłki','arek.ptak@gmail.com');
+
+
+

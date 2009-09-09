@@ -4,6 +4,8 @@
  */
 package klient.bean;
 
+
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 import klient.encje.dokument;
@@ -38,4 +40,11 @@ public interface dokumentFacadeLocal {
     public java.lang.Long MAXIdDokumentuDziecka(java.lang.Long idRodzica);
 
     public java.util.List<klient.encje.dokument> ListaDokumentowRedaktora(klient.encje.kontrahent kontra);
+
+    public double  SumaPowierzchniNumer(long idNumeru);
+
+
+    public java.util.List<klient.encje.dokument> ListaSpisTresci(java.lang.Long idnumer);
+
+    public java.util.List<klient.encje.dokument> ListaHonoraria(java.lang.Long idnumer);
 }
