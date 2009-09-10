@@ -1,0 +1,6 @@
+﻿
+INSERT INTO config (klucz,opis,wartosc)VALUE('ilosc.znakow.strona.maszynopisu','ilosc znaków na stronie maszynopisu','1800');
+INSERT INTO config (klucz,opis,wartosc)VALUE('ilosc.zankow.strona.skladu','Ilosc znaków mieszczacych sie na stronie pdf','4800');
+INSERT INTO config (klucz,opis,wartosc)VALUE('dokumenty.lokalizacja','Lokalizacja dokumentow','E:\tmp\dokumenty');
+INSERT INTO config (klucz,opis,wartosc)VALUE('sklad.id','numer kontrahenta pod ktorym miesci sie wysylka do skladu','');
+INSERT INTO config (klucz,opis,wartosc)VALUE('mail.cc','maile z aplikacji wysyłane do w celu sprawdzenia poprawnosci wysyłki','arek.ptak@gmail.com');

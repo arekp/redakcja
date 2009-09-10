@@ -16,7 +16,7 @@
         <s:textfield name="pesel" label="Pesel" value="%{pesel}" size="50"/>
         <s:textfield name="urzadSkarbowy" label="Urzad Skarbowy" value="%{urzadSkarbowy}" size="50"/>
         <s:textfield name="numerKonta" label="Numer Konta " value="%{numerKonta}" size="50"/>
-        <s:textfield name="stawka" label="Stawka" value="%{stawka}" size="50"/>
+        <s:textfield name="stawka" label="Stawka" value="0" size="50"/>
         <s:select label="Typ" name="typ"
                   value="%{typ}"
                   headerKey="1" list="{'Autor','Reklama','Redaktor','Barter'}" />

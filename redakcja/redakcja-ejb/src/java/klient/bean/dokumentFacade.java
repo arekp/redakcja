@@ -115,7 +115,12 @@ public class dokumentFacade implements dokumentFacadeLocal {
 //        Query q = em.createQuery("select sum(powierzchnia) from dokument where nume = :_numer and redaktor is null");
         Query q = em.createNativeQuery("select sum(powierzchnia) from dokument where idnumer = :_numer and idredaktora is null");
         q.setParameter("_numer", idNumeru);
-         double sum = (Double)q.getSingleResult();
+        double sum;
+        if(q.getSingleResult()==null){
+            sum =0;
+        }else{
+         sum = (Double)q.getSingleResult();
+        }
         return sum;
     }
   public List<dokument> ListaSpisTresci(Long idnumer) {
