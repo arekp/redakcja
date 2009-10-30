@@ -85,24 +85,30 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
         {
             Calendar cal = Calendar.getInstance();
             cal.setTime(getNumer().getData());
+            System.out.print("dANE WEJSCIOWE --> " + cal.getTime());
             cal.add(Calendar.MONTH, 1);
             int miesiac = cal.get(Calendar.MONTH) + 1;
             int rok = cal.get(Calendar.YEAR);
-            System.out.print(miesiac + " -- " + rok + " all " + cal.toString());
+            System.out.print("Wyszukujemy na podstawie danych dla poprzednich " + miesiac + " -- " + rok + " all " + cal.toString());
             setDaneKlient(klientFac.WysylkaMiesiac(miesiac, rok)); // przed ostatni
         } else if (getB().equals("reszta")) //Wysylka pozostali od numeru plus 1 miesiac
         {
             Calendar cal = Calendar.getInstance();
             cal.setTime(getNumer().getData());
+            System.out.print("dANE WEJSCIOWE --> " + cal.getTime());
             cal.add(Calendar.MONTH, 1);
+            int lastDate = cal.getActualMaximum(Calendar.DATE);
+            cal.set(Calendar.DATE, lastDate);
+
+            System.out.print("Wyszukujemy na podstawie danych dla pozostałych  " + cal.getTime());
             setDaneKlient(klientFac.WysylkaALL(cal.getTime()));
             System.out.print("reszta " + getDaneKlient().size());
         } else if (getB().equals("faktura")) {
             //Dopisac zapytanie do katur
         } else if (getB().equals("brak")) {
-              Calendar cal = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
             cal.setTime(getNumer().getData());
-            cal.set(Calendar.DAY_OF_MONTH,1);// ustawiamy zawsze pierwszy danego miesiaca zaby dzien nie miał wplywu na nieprzedluzonych
+            cal.set(Calendar.DAY_OF_MONTH, 1);// ustawiamy zawsze pierwszy danego miesiaca zaby dzien nie miał wplywu na nieprzedluzonych
             setDaneKlient(klientFac.WysylkaZrezygnowani(cal.getTime())); //nie przedluzyli
         } else {
         }
@@ -122,7 +128,7 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
     private void etykieta() {
         try {
             String katalog = configFac.findWartosc("raporty.lokalizacja.etykiety").getWartosc();
-                   String katalogjboss = configFac.findWartosc("raporty.lokalizacja.jboss").getWartosc();
+            String katalogjboss = configFac.findWartosc("raporty.lokalizacja.jboss").getWartosc();
             JasperCompileManager.compileReportToFile(
                     katalogjboss + "etykieta.jrxml",
                     katalogjboss + "etykieta.jasper");
@@ -216,7 +222,8 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
     public void setDaneKlient(Collection<Klient> DdaneKlient) {
         this.daneKlient = DdaneKlient;
     }
- @AroundInvoke
+
+    @AroundInvoke
     private KlientFacadeLocal KlientFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -226,7 +233,8 @@ public class wysylka extends ActionSupport implements SessionAware, ServletReque
             throw new RuntimeException(ne);
         }
     }
- @AroundInvoke
+
+    @AroundInvoke
     private configFacadeLocal ConfigFacadeLocal() {
         try {
             Context c = new InitialContext();
