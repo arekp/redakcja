@@ -30,4 +30,6 @@ public interface kontrahentFacadeLocal {
 
     public java.util.List<klient.encje.kontrahent> findTypKontrah(java.lang.String typ);
 
+ 
+
 }

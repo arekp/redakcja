@@ -5,6 +5,7 @@
 
 package klient.bean;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -56,4 +57,5 @@ public class kontrahentFacade implements kontrahentFacadeLocal {
         List klienci = q.getResultList();
         return klienci;
     }
+
 }

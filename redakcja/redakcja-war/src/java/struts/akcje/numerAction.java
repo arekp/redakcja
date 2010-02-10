@@ -14,10 +14,15 @@ import java.io.IOException;
 import java.io.InputStream;
 //import java.io.ObjectOutputStream;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import java.util.logging.Level;
@@ -28,6 +33,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import klient.bean.KlientFacadeLocal;
 import klient.bean.configFacadeLocal;
 import klient.bean.dokumentFacadeLocal;
 
@@ -71,6 +77,7 @@ public class numerAction extends ActionSupport implements SessionAware {
     private Collection<dokument> daneDokumenty;
     private Collection<dokument> daneDokumentyWolne;
     private Collection<spisTresci> daneSpisTresci;
+    private Collection statystykaPrenumeraty;
 
     @EJB
     numerFacadeLocal numerFac = (numerFacadeLocal) numerFacadeLocal();
@@ -80,6 +87,8 @@ public class numerAction extends ActionSupport implements SessionAware {
     plikFacadeLocal plikFac = (plikFacadeLocal) plikFacadeLocal();
     @EJB
     dokumentFacadeLocal dokumentFac = (dokumentFacadeLocal) dokumentFacadeLocal();
+    @EJB
+    KlientFacadeLocal klientFac = (KlientFacadeLocal) KlientFacadeLocal();
 
     public String execute() throws Exception {
 
@@ -198,7 +207,17 @@ public class numerAction extends ActionSupport implements SessionAware {
         setDaneDokumentyWolne(dokumentFac.ListaDokumentowWolna());
         System.out.print(" pomierzchnia "+dokumentFac.SumaPowierzchniNumer(_numer.getId()));
     setPowierzchnia(dokumentFac.SumaPowierzchniNumer(_numer.getId()));
-
+     setStatystykaPrenumeraty(klientFac.getStatystykaPrenumeraty(_numer.getData()));
+    List dane = new ArrayList();
+     Iterator i = getStatystykaPrenumeraty().iterator();
+        while(i.hasNext()) {
+          Object[] s = (Object[]) i.next();
+          String nazwa1 = (String) s[0];
+          BigDecimal  wartosc = (BigDecimal) s[1];
+    System.out.print("--> "+nazwa1+" "+wartosc);
+    dane.add(nazwa1);dane.add(wartosc);
+          }
+     setStatystykaPrenumeraty(dane);
     }
 
     public void sendFile(String idPliku) {
@@ -304,6 +323,16 @@ public class numerAction extends ActionSupport implements SessionAware {
         try {
             Context c = new InitialContext();
             return (configFacadeLocal) c.lookup("redakcja/configFacade/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private KlientFacadeLocal KlientFacadeLocal() {
+        try {
+            Context c = new InitialContext();
+            return (KlientFacadeLocal) c.lookup("redakcja/KlientFacade/local");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -624,6 +653,20 @@ public class numerAction extends ActionSupport implements SessionAware {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @return the statystykaPrenumeraty
+     */
+    public Collection getStatystykaPrenumeraty() {
+        return statystykaPrenumeraty;
+    }
+
+    /**
+     * @param statystykaPrenumeraty the statystykaPrenumeraty to set
+     */
+    public void setStatystykaPrenumeraty(Collection statystykaPrenumeraty) {
+        this.statystykaPrenumeraty = statystykaPrenumeraty;
     }
 
 

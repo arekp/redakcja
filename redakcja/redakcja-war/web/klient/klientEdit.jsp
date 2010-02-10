@@ -19,7 +19,14 @@
                 </td>
             </tr>
             <tr>
-                <td><s:textfield name="klasaKlienta" label="Klasa Klienta:" value="%{klient.klasaKlienta}"/>
+                <td>
+                                        <s:select label="Klasa Klienta:"
+    name="klasaKlienta"
+    headerKey="1"
+    headerValue="%{klient.klasaKlienta}"
+    list="CollectionklasaKlienta"
+    />
+
                 </td>
             </tr>
             <tr>

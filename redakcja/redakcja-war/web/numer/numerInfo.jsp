@@ -1,4 +1,5 @@
 <%@page  contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"  %>
+<%@page language="java" import="java.util.*"%>
 
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -12,8 +13,36 @@
 <div class="post">
     <h2 class="title"><a href="#">Numer <s:property value="#session.numer.nazwa" /></a></h2>
     <div class="entry" >
-        <p><s:property value="#session.numer.info" /></p>
-        <p>Do numeru mamy około <s:property value="%{powierzchnia}" /> stron.</p>
+        <table>
+            <tr>
+                <td>
+                    <p><s:property value="#session.numer.info" /></p>
+                    <p>Do numeru mamy około <s:property value="%{powierzchnia}" /> stron.</p>
+                </td>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="1">
+                        <tr>
+                            <th>Statystyki prenumeraty</th>
+                        </tr>
+                        <p/>
+                        <tr>
+                            <td>Typ</td><td>Ilosc</td>
+                        </tr>
+                        <s:iterator value="statystykaPrenumeraty" status="rowstatus">
+
+                            <s:if test="#rowstatus.odd == true">
+                                <tr>
+                                    <td><s:property/></td>
+                                </s:if>
+                                <s:else>
+                                    <td><s:property/></td>
+                                </tr>
+                            </s:else>
+
+                        </s:iterator>
+                    </table>
+        </td></tr></table>
+
         <table>
             <tr>
                 <td>
@@ -31,7 +60,7 @@
                 </td>
                 <td>
                     <fieldset>
-                        <legend><span style="color:#0000FF;font-weight:bold;"> Dodaj pliki </span></legend>
+                        <legend><span style="color:#0000FF;font-weight:bold;"> Dodaj pliki przypisane do numeru </span></legend>
                         <s:form name="form" enctype="multipart/form-data" method="post" action="/numer_addFile">
                             <s:hidden name="id" value="%{#session.numer.id}" />
                             <s:file  name="upload"  label="File" />
@@ -78,7 +107,7 @@
                             <s:if test="#session.numer.status == 'Otwarty'">
                                 <jmesa:htmlColumn  title="Akcja" >
                                     <a href="<s:url value="/numer_remDok.action?idDokumentu="/>${beandaneDokumenty.id}">Usuń z numeru</a>
-                                   <a href="<s:url value="/dokument/dokument_info.action?idDokumentu="/>${beandaneDokumenty.id}">Redakuj dokument</a>
+                                    <a href="<s:url value="/dokument/dokument_info.action?idDokumentu="/>${beandaneDokumenty.id}">Redakuj dokument</a>
                                 </jmesa:htmlColumn>
                             </s:if>
                         </jmesa:htmlRow>
@@ -109,7 +138,7 @@
                                 <jmesa:htmlColumn  title="Akcja" >
                                     <a href="<s:url value="/numer_addDok.action?idDokumentu="/>${beandaneDokumentyWolne.id}">Dodaj do numeru</a>
                                     <a href="<s:url value="/dokument/dokument_info.action?idDokumentu="/>${beandaneDokumentyWolne.id}">Redakuj dokument</a>
-                               </jmesa:htmlColumn>
+                                </jmesa:htmlColumn>
 
                             </jmesa:htmlRow>
                         </jmesa:htmlTable>

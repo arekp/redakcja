@@ -24,7 +24,14 @@ package example;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.apache.struts2.interceptor.SessionAware;
+import util.sendMailLocal;
 
 
 /**
@@ -34,14 +41,30 @@ public class HelloWorld extends ActionSupport implements SessionAware{
 
 //Map attibutes = ActionContext.getContext().getSession();
  private Map session;
-    @Override
+    @EJB
+    sendMailLocal sendMailFac = (sendMailLocal) sendMailLocal();
+
+ @Override
 public String execute() throws Exception {
+     System.out.print("Przed pobieraniem");
+     sendMailFac.getNews();
+     System.out.print("PO pobieraniu");
     Map attibutes = ActionContext.getContext().getSession();
         setMessage(getText(MESSAGE));
         System.out.print(attibutes.toString());
         attibutes.put("body","/body.jsp");
          System.out.print(attibutes.toString());
         return "success";
+    }
+
+     private sendMailLocal sendMailLocal() {
+        try {
+            Context c = new InitialContext();
+            return (sendMailLocal) c.lookup("redakcja/sendMailBean/local");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 
     /**

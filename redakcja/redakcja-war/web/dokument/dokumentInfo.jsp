@@ -20,7 +20,7 @@
 </p>
 <s:form action="/dokument/dokument_strona" method="post">
     <s:textfield name="nrStrony" label="Numer Strony" value="%{dokument.nrStrony}" size="3"/>
-    
+   Należy do grupy <s:property value="%{dokument.grupa.nazwa}"/>
     <s:select label="Grupa Artykułów" name="idGrupy" list="listaGrup"
     listKey="id" listValue="nazwa" multiple="false"  required="true" headerValue="%{dokument.grupa.nazwa}"/>
     <s:hidden name="idDokumentu" value="%{dokument.id}" />

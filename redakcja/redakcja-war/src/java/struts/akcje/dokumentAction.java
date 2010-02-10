@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 
+import javax.mail.MessagingException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -135,15 +136,15 @@ public class dokumentAction extends ActionSupport implements SessionAware {
             String znakiPDF = configFac.findWartosc("ilosc.zankow.strona.skladu").getWartosc();
 //sprawdzanie czy kontahent jest reklamodawca 
 //            _dokument.setPowierzchnia(Double.parseDouble(getPowierzchnia()));
-             System.out.print("Przed dane do reklamy");
+            System.out.print("Przed dane do reklamy");
             if (getTyp().equals("Reklama")) {
-                    System.out.print("START dane do reklamy");
+                System.out.print("START dane do reklamy");
                 _dokument.setStatus("Zamkniete");
                 _dokument.setIloscZnakow(0);
                 _dokument.setPowierzchnia(new BigDecimal(getPowierzchnia()).setScale(2, BigDecimal.ROUND_UP).doubleValue());
 //                _dokument.setGrupa(null);
                 System.out.print("mamy dane do reklamy");
-                 dokumentFac.create(_dokument);
+                dokumentFac.create(_dokument);
             } else {
                 _dokument.setStatus("Nowy");
                 _dokument.setIloscZnakow(getIloscZnakow());
@@ -154,7 +155,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
                 System.out.print("pow " + _dokument.getPowierzchnia());
                 grupaDok _grupaDok = grupaDokFac.find(Long.parseLong(getIdGrupy()));
                 System.out.print("mamy dane do grupa " + _grupaDok.getNazwa());
-                 dokumentFac.create(_dokument);
+                dokumentFac.create(_dokument);
                 _dokument.setGrupa(_grupaDok);
             }
 
@@ -239,7 +240,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
             this.info();
             getSession().put("body", "/dokument/dokumentInfo.jsp");
         }
-
+//  getSession().put("body", "/dokument/dokumentInfo.jsp");
 //        getSession().put("body", "/body.jsp");
         return "success";
     }
@@ -271,6 +272,7 @@ public class dokumentAction extends ActionSupport implements SessionAware {
     }
 
     public void sklad() {
+        System.out.print("jestesmy w sklad" + getIdDokumentReda());
         //metoda wysłania maila do skladu razem z załącznikum
         dokument _dokument = dokumentFac.find(Long.parseLong(getIdDokumentReda()));
         plik _plik = plikFac.findPlik(Long.parseLong(getIdDokumentReda()), "dokument");
@@ -310,11 +312,16 @@ public class dokumentAction extends ActionSupport implements SessionAware {
         String body = "\t Proszę o złożenie dokumentu \" " + _dokumentNew.getTytul() + " \" i odesłanie gotowego pdf'a na adres zwrotny .\n \n \n Pozdrawiam \n Sekretarz Redakcji";
         try {
             sendMailFac.sendMsg(_dokumentNew.getRedaktor().getEmail(), cc, "Dokument do składu " + _dokumentNew.getTytul(), body, url);
-        } catch (Exception ex) {
+        } 
+//        catch (MessagingException ex) {
+//            addActionError("Nie wysłano maila do składu !! Sprawdz skrzynke i wyslij ręcznie");
+//             System.out.print("bład przy wysłaniu maila");
+//            Logger.getLogger(dokumentAction.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        catch (Exception ex) {
             addActionError("Problemy z wysłaniem maila do składu.");
             Logger.getLogger(dokumentAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.info();
     }
 

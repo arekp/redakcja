@@ -5,6 +5,12 @@
 <struts>
 <!--constant name="struts.devMode" value="true" /-->
     <include file="example.xml"/>
+    <package name="mapa" namespace="/mapa" extends="struts-default">
+        <action name="mapa_*" class="struts.akcje.mapa" >
+            <param name="b">{1}</param>
+            <result name="success" >/index.jsp</result>
+        </action>
+    </package>
 
     <package name="wysylka" namespace="/wysylka" extends="struts-default">
         <result-types>
@@ -75,7 +81,9 @@
         <action name="witam" class="example.HelloWorld" >
             <result name="success" >/index.jsp</result>
         </action>
-
+        <action name="pobierz" class="example.HelloWorld" >
+            <result name="success" >/index.jsp</result>
+        </action>
         <action name="szukaj" class="struts.akcje.szukaj" >
            
             <result name="klient"  type="redirectAction" >

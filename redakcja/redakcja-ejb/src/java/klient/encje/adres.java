@@ -39,6 +39,9 @@ private String tel;
 private String email;
 private String typ;
 private String info;
+
+private String lat;
+private String lon;
 //private Long klient_id;
 
 public adres(){};
@@ -208,6 +211,35 @@ this.info = info;
      */
     public void setKlient(Klient klient) {
         this.klient = klient;
+    }
+
+   
+    /**
+     * @return the lat
+     */
+    public String getLat() {
+        return lat;
+    }
+
+    /**
+     * @param lat the lat to set
+     */
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    /**
+     * @return the lon
+     */
+    public String getLon() {
+        return lon;
+    }
+
+    /**
+     * @param lon the lon to set
+     */
+    public void setLon(String lon) {
+        this.lon = lon;
     }
 
 //    /**

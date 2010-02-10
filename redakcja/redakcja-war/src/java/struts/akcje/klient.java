@@ -71,6 +71,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
     private Collection<Klient> WysylkaPrzeter;
     private Collection<Klient> WysylkaMiesiacOst;
     private Collection<Klient> WysylkaMiesiacPrzed;
+    private Collection<String> CollectionklasaKlienta;
     private HttpServletRequest request;
     private HttpServletResponse response;
     @EJB
@@ -105,10 +106,26 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
 //private String info;
 
     @Override
-   public String execute() throws Exception {
+    public String execute() throws Exception {
 
         if (getB().equals("addZ")) //Dodajemy zamowienie
         {
+            boolean blad = false;
+
+            if (getIlosc().length() == 0) {
+                addFieldError("ilosc", "Podaj ilość egzemplarzy");
+                blad = true;
+            }
+             if (getPrenOd() == null) {
+                addFieldError("prenOd", "Podaj date poczatku");
+                blad = true;
+            }
+            if (blad) {
+                setKlient(klientFac.find(Long.parseLong(getId())));
+                getSession().put("body", "/klient/klientId.jsp");
+                return "success";
+            }
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(prenOd);
             cal.add(Calendar.MONTH, Integer.parseInt(getOkres()));
@@ -137,12 +154,13 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             getSession().put("body", "/klient/klientId.jsp");
         } else if (getB().equals("find"))//Szukamy klientow wyswietlamy liste
         {
-            System.out.print("jestesmy w szukaj klienta "+ getCiag());
+            System.out.print("jestesmy w szukaj klienta " + getCiag());
             setDaneKlient(klientFac.findKlient(getCiag()));
             this.tabelka();
             getSession().put("body", "/klient/listaZnal.jsp");
         } else if (getB().equals("adressEdit"))//Formularz do edycji adresu
-        {System.out.print(getIdadr());
+        {
+            System.out.print(getIdadr());
             setAadres(adrFac.find(Long.parseLong(getIdadr())));
 //            setKlient(klientFac.find(Long.parseLong(getId())));
             getSession().put("body", "/klient/adresEdit.jsp");
@@ -161,6 +179,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
         } else if (getB().equals("EditkIN"))//Formularz do edycji klienta
         {
             setKlient(klientFac.find(Long.parseLong(getId())));
+            setCollectionklasaKlienta(klientFac.getKlasaKlienta());
             getSession().put("body", "/klient/klientEdit.jsp");
         } else if (getB().equals("editK")) //edytujemy dane klienta
         {
@@ -176,9 +195,36 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             getSession().put("body", "/klient/klientId.jsp");
         } else if (getB().equals("newKlient"))//Formularz do wprowadzania nowego klienta
         {
+            setCollectionklasaKlienta(klientFac.getKlasaKlienta());
             getSession().put("body", "/klient/newKlient.jsp");
         } else if (getB().equals("newKlientZapisz"))// wprowadzenie nowego klienta
         {
+            boolean blad = false;
+
+            if (getNazwa().length() == 0) {
+                addFieldError("nazwa", "Nazwa nie może byc polem pustym");
+                blad = true;
+            }
+            if (getAdress().length() == 0) {
+                addFieldError("adress", "Adres nie może być pusty");
+                blad = true;
+            }
+            if (getMiasto().length() == 0) {
+                addFieldError("miasto", "Miasto nie może być puste");
+                blad = true;
+            }
+
+//            if ((getIloscZnakow() == 0) && (!getTyp().equals("Reklama"))) {
+//                addFieldError("iloscZnakow", "Musisz podać ilość znaków");
+//
+//                blad = true;
+//            }
+            if (blad) {
+                setCollectionklasaKlienta(klientFac.getKlasaKlienta());
+                getSession().put("body", "/klient/newKlient.jsp");
+                return "success";
+            }
+
             Klient kl = new Klient();
             kl.setNazwa(getNazwa());
             kl.setInfo(getInfo());
@@ -195,7 +241,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             getSession().remove("body");
             getSession().put("body", "/klient/klientId.jsp");
         } else if (getB().equals("wysylka"))//Przygotowanie strony z danymi do wysylki
-            //nie uzywana funkcjinalność przeniesione do klasy wysylka.java
+        //nie uzywana funkcjinalność przeniesione do klasy wysylka.java
         {
             Calendar cal = Calendar.getInstance();
             cal.setTime(getPrenOd());
@@ -206,9 +252,9 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
 //            System.out.print(getWysylkaMiesiacOst().size() + " setWysylkaMiesiacOst");
             Calendar cal1 = Calendar.getInstance();
             cal1.setTime(getPrenOd());
-            cal1.set(Calendar.DAY_OF_MONTH,1);// ustawiamy zawsze pierwszy danego miesiaca zaby dzien nie miał wplywu na nieprzedluzonych
+            cal1.set(Calendar.DAY_OF_MONTH, 1);// ustawiamy zawsze pierwszy danego miesiaca zaby dzien nie miał wplywu na nieprzedluzonych
             setWysylkaPrzeter(klientFac.WysylkaZrezygnowani(cal1.getTime())); //nie przedluzyli
-            System.out.print("data do nieprzedluzyli "+cal1.getTime());
+            System.out.print("data do nieprzedluzyli " + cal1.getTime());
             cal.add(Calendar.MONTH, 1);
             miesiac = cal.get(Calendar.MONTH) + 1;
             rok = cal.get(Calendar.YEAR);
@@ -234,8 +280,7 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             if (getNumer() != null) {
                 getSession().put("numer", getNumer());
             }
-        } 
-        else {
+        } else {
             getSession().put("body", "/body.jsp");
         }
 //        System.out.print("Body ma " + getSession().get("body"));
@@ -303,7 +348,8 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             throw new RuntimeException(ne);
         }
     }
- @AroundInvoke
+
+    @AroundInvoke
     private zamowieniaFacadeLocal zamowieniaFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -313,7 +359,8 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
             throw new RuntimeException(ne);
         }
     }
- @AroundInvoke
+
+    @AroundInvoke
     private adresFacadeLocal adresFacadeLocal() {
         try {
             Context c = new InitialContext();
@@ -796,5 +843,19 @@ public class klient extends ActionSupport implements SessionAware, ServletReques
      */
     public void setIdadr(String idadr) {
         this.idadr = idadr;
+    }
+
+    /**
+     * @return the CollectionklasaKlienta
+     */
+    public Collection<String> getCollectionklasaKlienta() {
+        return CollectionklasaKlienta;
+    }
+
+    /**
+     * @param CollectionklasaKlienta the CollectionklasaKlienta to set
+     */
+    public void setCollectionklasaKlienta(Collection<String> CollectionklasaKlienta) {
+        this.CollectionklasaKlienta = CollectionklasaKlienta;
     }
 }

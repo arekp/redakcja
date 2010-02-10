@@ -74,6 +74,8 @@
 <table cellpadding="5">
     <tr>
         <td>
+            <s:fielderror name="ilosc"/>
+            
             <form name="presidentsForm" action="<s:url value="/klient/klient_id.action?id="/><s:property value="klient.id"/>" >
                 <jmesa:struts2TableFacade
                     id="zamowienia_id"
@@ -111,8 +113,10 @@
             </select></td>
             <td></td>
         </tr><tr>
-            <td>Ilosc</td>
-            <td><input type="text" name="ilosc" value="" size="3"/></td>
+            
+            <td> <s:textfield required="true" name="ilosc" label="Ilość:" value="%{ilosc}" size="3"/>
+
+                </td>
         </tr>
         <tr>
 

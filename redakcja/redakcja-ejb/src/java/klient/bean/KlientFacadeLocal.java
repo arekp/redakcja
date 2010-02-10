@@ -4,6 +4,7 @@
  */
 package klient.bean;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -37,4 +38,8 @@ public interface KlientFacadeLocal {
     public String IloscEgzempl(Date data);
 
     public String IloscEgzempl(Date data, String typ);
+
+    public Collection getStatystykaPrenumeraty(java.util.Date data);
+
+    public Collection getKlasaKlienta();
 }

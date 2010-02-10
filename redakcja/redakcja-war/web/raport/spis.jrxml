@@ -10,7 +10,7 @@
 				<textField>
 					<reportElement mode="Opaque" x="4" y="0" width="548" height="38" forecolor="#FFFFFF" backcolor="#0000FF"/>
 					<textElement>
-						<font size="14"/>
+						<font size="14" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{grupa.nazwa}]]></textFieldExpression>
 				</textField>
@@ -49,7 +49,9 @@
 		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="1" y="0" width="451" height="20"/>
-				<textElement/>
+				<textElement>
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{tytul}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -86,7 +88,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="10"/>
+					<font size="10" pdfEncoding="Cp1250"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Strona " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
 			</textField>
@@ -99,7 +101,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="10"/>
+					<font size="10" pdfEncoding="Cp1250"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>

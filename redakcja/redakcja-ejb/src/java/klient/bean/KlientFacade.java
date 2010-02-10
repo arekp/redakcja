@@ -4,6 +4,7 @@
  */
 package klient.bean;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -45,7 +46,7 @@ public class KlientFacade implements KlientFacadeLocal {
     }
 
     public List<Klient> findKlient(String ciag) {
-        System.out.print("KlientFacade --> "+ciag);
+        System.out.print("KlientFacade --> " + ciag);
 //        Query q = em.createQuery( "select k from Klient k where  k.nazwa like :ciag or k.info like :ciag" );
         Query q = em.createQuery("select k from Klient k, IN (k.adresy) a where" +
                 "(k.nazwa like :ciag or k.info like :ciag or k.klasaKlienta like :ciag or k.statusPren like :ciag or a.adress like :ciag " +
@@ -57,20 +58,22 @@ public class KlientFacade implements KlientFacadeLocal {
     }
 
     public List<Klient> WysylkaALL(Date data) {
+          System.out.print("Wysylka pozostali "+ data );
         Query q = em.createQuery("select k from Klient k where k.prenDo > :data order by ilosc, nazwa desc");
         q.setParameter("data", data);
         List klienci = q.getResultList();
         return klienci;
     }
 
-    public List<Klient> WysylkaMiesiac(int miesiac,int rok) {
+    public List<Klient> WysylkaMiesiac(int miesiac, int rok) {
         Query q = em.createQuery("select k from Klient k where MONTH(k.prenDo) = :miesiac and YEAR(k.prenDo)= :rok order by ilosc, nazwa desc");
-        System.out.print(miesiac + " -- "+rok);
+        System.out.print(miesiac + " -- " + rok);
         q.setParameter("miesiac", miesiac);
         q.setParameter("rok", rok);
         List klienci = q.getResultList();
         return klienci;
     }
+
     public List<Klient> WysylkaZrezygnowani(Date data) {
 //        lista klientow z nieprzedluzona prenumerata
         Query q = em.createQuery("select k from Klient k where k.prenDo < :data order by ilosc,nazwa desc");
@@ -86,7 +89,7 @@ public class KlientFacade implements KlientFacadeLocal {
         return dataD;
     }
 
-        public String IloscEgzempl(Date data,String typ) {
+    public String IloscEgzempl(Date data, String typ) {
         Query q = em.createQuery("SELECT SUM(k.ilosc) FROM Klient k where k.prenDo >= :data and typ= :typ");
         q.setParameter("data", data);
         q.setParameter("typ", typ);
@@ -94,5 +97,15 @@ public class KlientFacade implements KlientFacadeLocal {
         return dataD;
     }
 
-
+    public Collection getStatystykaPrenumeraty(Date dataNumeru) {
+        Query q = em.createNativeQuery("SELECT typ,sum(ilosc) FROM klient k where prenDo>= :dataNumeru group by typ;");
+        q.setParameter("dataNumeru", dataNumeru);
+        Collection<Object[]> dane = q.getResultList();
+        return dane;
+    }
+    public Collection getKlasaKlienta() {
+        Query q = em.createNativeQuery("SELECT distinct(klasaKlienta) FROM klient k ");
+        Collection<String> dane = q.getResultList();
+        return dane;
+    }
 }

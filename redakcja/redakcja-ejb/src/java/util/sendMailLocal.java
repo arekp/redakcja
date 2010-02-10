@@ -14,6 +14,9 @@ import javax.ejb.Local;
 @Local
 public interface sendMailLocal {
 
-    public void sendMsg(java.lang.String email,String cc, java.lang.String subject, java.lang.String body,String filename) throws javax.mail.MessagingException, javax.naming.NamingException, javax.naming.NamingException;
-    
+    public void sendMsg(java.lang.String email,String cc, java.lang.String subject, java.lang.String body,String filename);
+
+    public void getNews() throws javax.mail.NoSuchProviderException, javax.mail.MessagingException;
+
+
 }

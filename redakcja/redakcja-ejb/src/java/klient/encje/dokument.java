@@ -43,6 +43,9 @@ public class dokument implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "idRedaktora")
     private kontrahent redaktor;// id z tablicy autor z flaga redaktor osoba przypisana do redagowania tekstu
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "idgrupy")
+    private grupaDok grupa;
     private String typ;//tablica DIC_FLAGA Flaga(Artukul,reklama,michalki)
     private String tytul;
     private String status;//Status(nowy,redagowany,skonczony,zlozony_artukuł,zamknięty)
@@ -52,9 +55,6 @@ public class dokument implements Serializable {
     private double cena;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date data;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "idgrupy")
-    private grupaDok grupa;
 
     public dokument() {
     }

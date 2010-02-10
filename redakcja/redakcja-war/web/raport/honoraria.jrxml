@@ -20,8 +20,8 @@
 		<groupHeader>
 			<band height="29" splitType="Stretch">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="282" height="28" backcolor="#FFFF33"/>
-					<textElement>
+					<reportElement mode="Transparent" x="0" y="1" width="342" height="28" backcolor="#FFFF33"/>
+					<textElement verticalAlignment="Middle">
 						<font size="15" isBold="true" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{kont.nazwiskoImie}]]></textFieldExpression>
@@ -30,19 +30,18 @@
 		</groupHeader>
 		<groupFooter>
 			<band height="36">
-				<line>
-					<reportElement x="0" y="23" width="442" height="1"/>
-				</line>
 				<textField pattern="#,##0.00;-#,##0.00">
-					<reportElement x="661" y="0" width="141" height="35"/>
-					<textElement>
+					<reportElement x="699" y="0" width="103" height="35"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="13" isBold="true" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{sumaAutora}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="501" y="0" width="160" height="23"/>
-					<textElement/>
+					<reportElement x="539" y="0" width="160" height="35"/>
+					<textElement verticalAlignment="Middle">
+						<font pdfEncoding="Cp1250"/>
+					</textElement>
 					<text><![CDATA[Wysokość honorarium do wypłaty]]></text>
 				</staticText>
 			</band>
@@ -52,25 +51,25 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="27" splitType="Stretch">
+		<band height="59" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="442" height="27" forecolor="#FFFFFF" backcolor="#0000FF"/>
+				<reportElement mode="Opaque" x="0" y="0" width="501" height="59" forecolor="#FFFFFF" backcolor="#0000FF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="13" isBold="true" pdfEncoding="Cp1250"/>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
 				</textElement>
 				<text><![CDATA[Wycena wysokości honorariów za teksty artykułów zamieszczonych w  nr.]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="442" y="0" width="82" height="27" forecolor="#FFFFFF" backcolor="#0000FF"/>
+				<reportElement mode="Opaque" x="501" y="0" width="87" height="59" forecolor="#FFFFFF" backcolor="#0000FF"/>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true" pdfEncoding="Cp1250"/>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nume.nazwa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="524" y="0" width="278" height="27" forecolor="#FFFFFF" backcolor="#0000FF"/>
+				<reportElement mode="Opaque" x="588" y="0" width="214" height="59" forecolor="#FFFFFF" backcolor="#0000FF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true" pdfEncoding="Cp1250"/>
+					<font size="14" isBold="true" pdfEncoding="Cp1250"/>
 				</textElement>
 				<text><![CDATA[„Administratora”]]></text>
 			</staticText>
@@ -82,71 +81,85 @@
 	<columnHeader>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="182" height="20"/>
-				<textElement>
+				<reportElement x="704" y="0" width="98" height="22"/>
+				<textElement verticalAlignment="Middle">
 					<font pdfEncoding="Cp1250"/>
 				</textElement>
-				<text><![CDATA[Tytuł Artykułu]]></text>
+				<text><![CDATA[Honorarium za teksty artykułów ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="182" y="0" width="60" height="20"/>
-				<textElement>
-					<font pdfEncoding="Cp1250"/>
-				</textElement>
-				<text><![CDATA[Strona]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="242" y="0" width="100" height="20"/>
-				<textElement>
-					<font pdfEncoding="Cp1250"/>
-				</textElement>
-				<text><![CDATA[Liczba znaków]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="342" y="0" width="100" height="20"/>
-				<textElement>
+				<reportElement x="508" y="0" width="80" height="22"/>
+				<textElement verticalAlignment="Middle">
 					<font pdfEncoding="Cp1250"/>
 				</textElement>
 				<text><![CDATA[Liczba str. A4 masz.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="442" y="0" width="116" height="20"/>
-				<textElement/>
+				<reportElement x="588" y="0" width="116" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<text><![CDATA[Kwota za 1 str. masz. (zł)
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="558" y="2" width="103" height="18"/>
-				<textElement/>
-				<text><![CDATA[Honorarium za teksty artykułów ]]></text>
+				<reportElement x="437" y="0" width="71" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Liczba znaków]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="0" width="60" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Strona]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="242" height="22" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Tytuł Artykułu]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="39" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="182" height="35"/>
-				<textElement/>
+				<reportElement x="0" y="0" width="370" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{tytul}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="442" y="0" width="116" height="20"/>
-				<textElement/>
+				<reportElement x="588" y="0" width="116" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{kont.stawka}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="242" y="0" width="100" height="20"/>
-				<textElement/>
+				<reportElement x="430" y="0" width="73" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{iloscZnakow}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="182" y="0" width="60" height="20"/>
-				<textElement/>
+				<reportElement x="370" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nrStrony}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="558" y="0" width="100" height="20"/>
-				<textElement verticalAlignment="Bottom"/>
+				<reportElement x="702" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{cena}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -160,17 +173,29 @@
 	<summary>
 		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="524" y="1" width="137" height="27"/>
-				<textElement/>
+				<reportElement x="542" y="1" width="137" height="27"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$V{sumacałosci}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="661" y="1" width="141" height="27"/>
-				<textElement>
+				<reportElement x="679" y="1" width="123" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="15" isBold="true" pdfEncoding="Cp1250"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$V{sumacałosci}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="403" y="1" width="136" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[Suma całości]]></text>
+			</staticText>
+			<line>
+				<reportElement x="401" y="1" width="401" height="1"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

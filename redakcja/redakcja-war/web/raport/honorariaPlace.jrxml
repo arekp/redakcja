@@ -8,7 +8,7 @@
 	<field name="kont.numerKonta" class="java.lang.String"/>
 	<field name="kont.nip" class="java.lang.String"/>
 	<field name="nume.nazwa" class="java.lang.String"/>
-	<variable name="suma" class="java.lang.Double" resetType="Group" resetGroup="kontrah" incrementType="Group" incrementGroup="kontrah" calculation="Sum">
+	<variable name="suma" class="java.lang.Double" resetType="Group" resetGroup="kontrah" calculation="Sum">
 		<variableExpression><![CDATA[$F{cena}]]></variableExpression>
 	</variable>
 	<variable name="sumawyplat" class="java.lang.Double" calculation="Sum">
@@ -29,13 +29,6 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[" NIP : "+$F{kont.nip}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="403" y="0" width="152" height="61"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfEncoding="Cp1250"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{kont.numerKonta}]]></textFieldExpression>
-				</textField>
-				<textField>
 					<reportElement x="0" y="0" width="248" height="35"/>
 					<textElement>
 						<font size="16" isBold="true" pdfEncoding="Cp1250"/>
@@ -46,9 +39,18 @@
 					<reportElement x="0" y="64" width="555" height="1"/>
 				</line>
 				<textField>
-					<reportElement x="248" y="6" width="155" height="55"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<reportElement x="248" y="11" width="155" height="24"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfEncoding="Cp1250"/>
+					</textElement>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$V{suma}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="403" y="11" width="152" height="24"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{kont.numerKonta}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -95,14 +97,14 @@
 			<staticText>
 				<reportElement x="0" y="14" width="248" height="14"/>
 				<textElement>
-					<font size="8"/>
+					<font size="8" pdfEncoding="Cp1250"/>
 				</textElement>
 				<text><![CDATA[NIP]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="248" y="3" width="155" height="27"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" pdfEncoding="Cp1250"/>
 				</textElement>
 				<text><![CDATA[Kwota do wypłaty]]></text>
 			</staticText>
@@ -119,21 +121,21 @@
 		<band/>
 	</detail>
 	<columnFooter>
-		<band height="24">
-			<staticText>
-				<reportElement x="100" y="0" width="148" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="13" isBold="true" pdfEncoding="Cp1250"/>
-				</textElement>
-				<text><![CDATA[SUMA]]></text>
-			</staticText>
+		<band height="29">
 			<textField>
-				<reportElement x="248" y="0" width="155" height="20"/>
+				<reportElement x="400" y="9" width="155" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" pdfEncoding="Cp1250"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$V{sumawyplat}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="248" y="9" width="148" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[SUMA]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -158,6 +160,6 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band/>
+		<band height="802"/>
 	</summary>
 </jasperReport>
