@@ -1,0 +1,14 @@
+# Sprecyzujemy tutaj założenia jakie będą towarzyszyły przy tworzeniu projektu #
+
+## Klienci ##
+  * Lista i dane osobowe klientów
+  * Rodzaj i data rozpoczecia prenumeraty
+  * Statystyki o trendach lokalizacji
+  * Bazy nowych potencjalnych klientów
+
+## Redagowanie pisma ##
+
+  * Zbieranie i wersjonowanie nowych artykułów
+  * Wycena i kosztorys numeru/ artykułów
+  * Składanie numeru, generowanie spisu treści
+  * Zarządzanie fragmentami publikując je na stronach zewnętrznych

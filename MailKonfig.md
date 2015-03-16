@@ -1,0 +1,43 @@
+JBOSS i konfiguracja poczty
+
+# konfiguracja mail-service.xml #
+
+```
+  <mbean code="org.jboss.mail.MailService"
+         name="jboss:service=Mail">
+    <attribute name="JNDIName">mail/MailTest</attribute>
+    <attribute name="User">user@gmail.com</attribute>
+    <attribute name="Password">********</attribute>
+    <attribute name="Configuration">
+      <!-- A test configuration -->
+      <configuration>
+        <!-- Change to your mail server prototocol -->
+        <property name="mail.store.protocol" value="pop3"/>
+        <property name="mail.transport.protocol" value="smtp"/>
+       <property name="mail.smtp.starttls.enable" value="true"/>  
+   
+         <!-- Change to the user who will receive mail  -->
+        <property name="mail.user" value="user@gmal.com" />
+
+        <!-- Change to the mail server  -->
+        <property name="mail.pop3.host" value="pop.gmail.com" />
+
+        <!-- Change to the SMTP gateway server -->
+        <property name="mail.smtp.host" value="smtp.gmail.com" />
+        
+        <!-- The mail server port -->
+        <property name="mail.smtp.port" value="25"/>
+        
+        <!-- Change to the address mail will be from  -->
+        <property name="mail.from" value="user@gmail.com" />
+
+        <!-- Enable debugging output from the javamail classes -->
+        <property name="mail.debug" value="true"/>
+      </configuration>
+    </attribute>
+    <depends>jboss:service=Naming</depends>
+    
+    
+    
+  </mbean>
+```
